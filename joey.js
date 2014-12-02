@@ -97,7 +97,7 @@ window.onload = function init()
     UNIFORM_shininess = gl.getUniformLocation(program, "shininess");
 
     viewMatrix = lookAt(eye, at, up);
-    projectionMatrix = perspective(90, 2, 0.001, 2000);
+    projectionMatrix = perspective(100, 2, 0.001, 2000);
 
     timer.reset();
     gl.enable(gl.DEPTH_TEST);
@@ -141,7 +141,7 @@ function render()
     mvMatrix = mult(viewMatrix, rotate(0, [1, 0, 0]));
     var ctm = mat4();
 	ctm = mult(ctm, mvMatrix);
-	ctm = mult(ctm, scale(vec3(45,18,25)));
+	ctm = mult(ctm, scale(vec3(75,22,65)));
     gl.uniformMatrix4fv(UNIFORM_mvMatrix, false, flatten(ctm));
     gl.uniformMatrix4fv(UNIFORM_pMatrix, false, flatten(projectionMatrix));
 
@@ -156,7 +156,7 @@ function render()
     ctm = mat4();
 	ctm = mult(ctm, mvMatrix);
 	ctm = mult(ctm, scale(vec3(1,4,1)));
-	ctm = mult(ctm, translate(vec3(-4,0,0)));
+	ctm = mult(ctm, translate(vec3(-6,-2,-3)));
     gl.uniformMatrix4fv(UNIFORM_mvMatrix, false, flatten(ctm));
     gl.uniformMatrix4fv(UNIFORM_pMatrix, false, flatten(projectionMatrix));
     gl.drawArrays( gl.TRIANGLES, 0, 36);
