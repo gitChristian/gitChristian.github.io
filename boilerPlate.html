@@ -3,14 +3,16 @@
 
 <script id="vertex-shader" type="x-shader/x-vertex">
 attribute vec4 vPosition;
-attribute vec4 vColor;
+attribute  vec2 vBuildTexCoord;
 
-varying vec4 fColor;
+uniform mat4 mvMatrix, pMatrix;
 
+varying vec2 fBuildTexCoord;
 void main()
 {
-    gl_Position = vPosition;
-    fColor = vColor;
+    gl_Position = pMatrix * mvMatrix * vPosition;
+	fBuildTexCoord = vBuildTexCoord;
+    
 }
 </script>
 
@@ -18,20 +20,23 @@ void main()
 
 precision mediump float;
 
-varying vec4 fColor;
+varying  vec2 fBuildTexCoord;
+uniform sampler2D texture;
+
 void main()
 {
-    gl_FragColor = fColor;
+    gl_FragColor = texture2D( texture, fBuildTexCoord );
 }
 </script>
 
 <script type="text/javascript" src="Common/webgl-utils.js"></script>
 <script type="text/javascript" src="Common/initShaders.js"></script>
 <script type="text/javascript" src="Common/MV.js"></script>
-<script type="text/javascript" src="blah.js"></script>
+<script type="text/javascript" src="ChristianGlobal.js"></script>
+<script type="text/javascript" src="Christian.js"></script>
 
 <body>
-<canvas id="gl-canvas" width="512"" height="512"
+<canvas id="gl-canvas" width="512" height="512">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
 
