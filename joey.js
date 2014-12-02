@@ -1,6 +1,9 @@
 var canvas;
 var gl;
 var program;
+var change;
+
+var tBuffer;
 
 var length = 1;
 var time = 0.0;
@@ -70,6 +73,8 @@ function configureTexture( image ) {
     
    // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 	//gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	
+	
     
     gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
 }
@@ -90,14 +95,15 @@ window.onload = function init()
         vec3(  length,  -length, length ), //vertex 1
         vec3( -length,   length, length  ), //vertex 2
         vec3( -length,  -length, length ),  //vertex 3 
-        vec3(  length,   length, -length - z), //vertex 4
-        vec3(  length,  -length, -length - z), //vertex 5
-        vec3( -length,   length, -length - z), //vertex 6
-        vec3( -length,  -length, -length - z)  //vertex 7   
+        vec3(  length,   length, -length), //vertex 4
+        vec3(  length,  -length, -length), //vertex 5
+        vec3( -length,   length, -length), //vertex 6
+        vec3( -length,  -length, -length)  //vertex 7   
     ];
 
     var points = [];
     var normals = [];
+    
     Cube(vertices, points, normals);
 
 	console.log(texCoordsArray);
@@ -114,8 +120,8 @@ window.onload = function init()
     gl.bufferData( gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW );
     
     //buffer for holding the texture
-    var tBuffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
+    tBuffer = gl.createBuffer();
+gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(texCoordsArray), gl.STATIC_DRAW );
     
     //linked shader variable for texture
@@ -144,13 +150,19 @@ window.onload = function init()
     UNIFORM_shininess = gl.getUniformLocation(program, "shininess");
     
         var image = new Image();
-    	image.src = "brick.jpg";
+    	image.src = "rock_texture.jpg";
     	image.onload = function() { 
         configureTexture( image );
     }
+    
+    change = gl.getUniformLocation(program, "colorChange");
+
+	//Alternate between texture mapping and coloring.
+
+	gl.uniform1f(change,  0.0);
 
     viewMatrix = lookAt(eye, at, up);
-    projectionMatrix = perspective(100, 2, 0.001, 2000);
+    projectionMatrix = perspective(100, 2, 0.001, 100);
 
     timer.reset();
     gl.enable(gl.DEPTH_TEST);
@@ -178,35 +190,36 @@ function Quad( vertices, points, normals, v1, v2, v3, v4, normal){
 
     points.push(vertices[v1]);
     
-    texCoordsArray.push(texCoord[0]);
+    texCoordsArray.push(vec2(texCoord[0][0]*75, texCoord[0][1]*22) );
     
     points.push(vertices[v3]);
-    texCoordsArray.push(texCoord[2]);
-    
+    texCoordsArray.push(vec2(texCoord[1][0]*75, texCoord[1][1]*22) );
     points.push(vertices[v4]);
-    texCoordsArray.push(texCoord[3]);
+    texCoordsArray.push(vec2(texCoord[2][0]*75, texCoord[2][1]*22) );
     points.push(vertices[v1]);
-    texCoordsArray.push(texCoord[0]);
+    texCoordsArray.push(vec2(texCoord[0][0]*75, texCoord[0][1]*22) );
     points.push(vertices[v4]);
-    texCoordsArray.push(texCoord[3]);
+    texCoordsArray.push(vec2(texCoord[2][0]*75, texCoord[2][1]*22) )
     points.push(vertices[v2]);
-    texCoordsArray.push(texCoord[1]);
+    texCoordsArray.push(vec2(texCoord[3][0]*75, texCoord[3][1]*22) )
 }
 
 
 function render()
 {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
     time += timer.getElapsedTime() / 1000;
-
-
-
     mvMatrix = mult(viewMatrix, rotate(0, [1, 0, 0]));
 
     var ctm = mat4();
 	ctm = mult(ctm, mvMatrix);
 	ctm = mult(ctm, scale(vec3(75,22,65)));
+	
+
+    
+    
+	
+	
 	
 	
     if(iKey)
@@ -219,8 +232,6 @@ function render()
     	z-=.3;
     	kKey = false;
     }
-	
-
 	
     gl.uniformMatrix4fv(UNIFORM_mvMatrix, false, flatten(ctm));
     gl.uniformMatrix4fv(UNIFORM_pMatrix, false, flatten(projectionMatrix));
@@ -235,7 +246,7 @@ function render()
     
 	var off = 0;
     
-    for(var i =0; i<50; i++)
+    for(var i =0; i<150; i++)
     {
     	
     	
@@ -255,7 +266,7 @@ function render()
 	
 	off=0;
 	
-	for(var i =0; i<50; i++)
+	for(var i =0; i<150; i++)
     {
     	
     	
