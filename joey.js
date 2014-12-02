@@ -31,7 +31,7 @@ var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
 var specularProduct = mult(lightSpecular, materialSpecular);
 
 var shininess = 50;
-var lightPosition = vec3(9.0, -7.0, 0.0);
+var lightPosition = vec3(-9.0, 7.0, 0.0);
 
 var eye = vec3(0, 0.0, 10.0);
 var at = vec3(0, 0, 0);
