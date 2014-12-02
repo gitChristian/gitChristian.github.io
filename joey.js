@@ -1,5 +1,7 @@
 var canvas;
 var gl;
+var program;
+
 var length = 1;
 var time = 0.0;
 var timer = new Timer();
@@ -18,6 +20,9 @@ var viewMatrix;
 var projectionMatrix;
 var mvpMatrix;
 
+/*
+///  Lighting Stuff
+*/
 var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0);
 var materialAmbient = vec4(0.0, 0.0, 1.0, 1.0);
 var ambientProduct = mult(lightAmbient, materialAmbient);
@@ -31,13 +36,43 @@ var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
 var specularProduct = mult(lightSpecular, materialSpecular);
 
 var shininess = 50;
-var lightPosition = vec3(-9.0, 7.0, 0.0);
+var lightPosition = vec3(-9.0, 7.0, -2.0);
 
+//perspective variables
 var eye = vec3(0, 0.0, 10.0);
 var at = vec3(0, 0, 0);
 var up = vec3(0, 1, 0);
 
+//texture variables
+var texCoord = [
+    vec2(0, 0),
+    vec2(0, 1),
+    vec2(1, 1),
+    vec2(1, 0)
+];
+
+var texCoordsArray = [];
+
 z = 0;
+
+var iKey, jKey, kKey,lKey,rKey, upKey, downKey, leftKey, rightKey, cKey, nKey,wKey;
+
+function configureTexture( image ) {
+    texture = gl.createTexture();
+    gl.bindTexture( gl.TEXTURE_2D, texture );
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image );
+         
+    //generate a mipMap
+    gl.generateMipmap( gl.TEXTURE_2D );
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR );
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
+    
+   // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	//gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    
+    gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
+}
 
 window.onload = function init()
 {
@@ -65,7 +100,9 @@ window.onload = function init()
     var normals = [];
     Cube(vertices, points, normals);
 
-    var program = initShaders( gl, "vertex-shader", "fragment-shader" );
+	console.log(texCoordsArray);
+	
+    program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
 
     positionBuffer = gl.createBuffer();
@@ -75,6 +112,16 @@ window.onload = function init()
     normalBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, normalBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW );
+    
+    //buffer for holding the texture
+    var tBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(texCoordsArray), gl.STATIC_DRAW );
+    
+    //linked shader variable for texture
+    var vTexCoord = gl.getAttribLocation( program, "vTexCoord" );
+    gl.vertexAttribPointer( vTexCoord, 2, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( vTexCoord );
 
     ATTRIBUTE_position = gl.getAttribLocation( program, "vPosition" );
     gl.enableVertexAttribArray( ATTRIBUTE_position );
@@ -95,6 +142,12 @@ window.onload = function init()
     UNIFORM_specularProduct = gl.getUniformLocation(program, "specularProduct");
     UNIFORM_lightPosition = gl.getUniformLocation(program, "lightPosition");
     UNIFORM_shininess = gl.getUniformLocation(program, "shininess");
+    
+        var image = new Image();
+    	image.src = "brick.jpg";
+    	image.onload = function() { 
+        configureTexture( image );
+    }
 
     viewMatrix = lookAt(eye, at, up);
     projectionMatrix = perspective(100, 2, 0.001, 2000);
@@ -124,11 +177,20 @@ function Quad( vertices, points, normals, v1, v2, v3, v4, normal){
     normals.push(normal);
 
     points.push(vertices[v1]);
+    
+    texCoordsArray.push(texCoord[0]);
+    
     points.push(vertices[v3]);
+    texCoordsArray.push(texCoord[2]);
+    
     points.push(vertices[v4]);
+    texCoordsArray.push(texCoord[3]);
     points.push(vertices[v1]);
+    texCoordsArray.push(texCoord[0]);
     points.push(vertices[v4]);
+    texCoordsArray.push(texCoord[3]);
     points.push(vertices[v2]);
+    texCoordsArray.push(texCoord[1]);
 }
 
 
@@ -138,10 +200,28 @@ function render()
 
     time += timer.getElapsedTime() / 1000;
 
+
+
     mvMatrix = mult(viewMatrix, rotate(0, [1, 0, 0]));
+
     var ctm = mat4();
 	ctm = mult(ctm, mvMatrix);
 	ctm = mult(ctm, scale(vec3(75,22,65)));
+	
+	
+    if(iKey)
+    {	z+=.3;
+    	
+    	iKey = false;
+    }
+    if(kKey)
+    {
+    	z-=.3;
+    	kKey = false;
+    }
+	
+
+	
     gl.uniformMatrix4fv(UNIFORM_mvMatrix, false, flatten(ctm));
     gl.uniformMatrix4fv(UNIFORM_pMatrix, false, flatten(projectionMatrix));
 
@@ -153,13 +233,88 @@ function render()
 
     gl.drawArrays( gl.TRIANGLES, 0, 36);
     
-    ctm = mat4();
-	ctm = mult(ctm, mvMatrix);
-	ctm = mult(ctm, scale(vec3(1,4,1)));
-	ctm = mult(ctm, translate(vec3(-6,-2,-3)));
-    gl.uniformMatrix4fv(UNIFORM_mvMatrix, false, flatten(ctm));
-    gl.uniformMatrix4fv(UNIFORM_pMatrix, false, flatten(projectionMatrix));
-    gl.drawArrays( gl.TRIANGLES, 0, 36);
+	var off = 0;
+    
+    for(var i =0; i<50; i++)
+    {
+    	
+    	
+		ctm = mat4();
+		ctm = mult(ctm, mvMatrix);
+		ctm = mult(ctm, scale(vec3(2,30,2)));
+		ctm = mult(ctm, translate(vec3((-36),0,(-8 + off + z))));
+
+		gl.uniformMatrix4fv(UNIFORM_mvMatrix, false, flatten(ctm));
+		gl.uniformMatrix4fv(UNIFORM_pMatrix, false, flatten(projectionMatrix));
+	
+		gl.drawArrays( gl.TRIANGLES, 0, 36);
+		
+		off-=3;
+
+	}
+	
+	off=0;
+	
+	for(var i =0; i<50; i++)
+    {
+    	
+    	
+		ctm = mat4();
+		ctm = mult(ctm, mvMatrix);
+		ctm = mult(ctm, scale(vec3(2,30,2)));
+		ctm = mult(ctm, translate(vec3((+36),0,(-8 + off + z))));
+
+		gl.uniformMatrix4fv(UNIFORM_mvMatrix, false, flatten(ctm));
+		gl.uniformMatrix4fv(UNIFORM_pMatrix, false, flatten(projectionMatrix));
+	
+		gl.drawArrays( gl.TRIANGLES, 0, 36);
+		
+		off-=3;
+
+	}
+
+
 
     window.requestAnimFrame( render );
 }
+
+document.addEventListener('keydown', function(event) {
+    if (event.keyCode == 73){
+        iKey = true;
+    }
+    if (event.keyCode == 74){
+        jKey = true;
+    }
+    if (event.keyCode == 75){
+        kKey = true;
+    }
+    if (event.keyCode == 76){
+        lKey = true;
+    }
+    if (event.keyCode == 82){
+        rKey = true;
+    }
+    if (event.keyCode == 38){
+        upKey = true;
+    }
+    if (event.keyCode == 40){
+        downKey = true;
+    }
+    if (event.keyCode == 37){
+        leftKey = true;
+    }
+    if (event.keyCode == 39){
+        rightKey = true;
+    }
+	if (event.keyCode == 67){
+        cKey = true;
+    }
+    if(event.keyCode==78){
+    	nKey = true;
+    }
+    if(event.keyCode==87){
+    	wKey = true;
+    }
+    
+    
+});
