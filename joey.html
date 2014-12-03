@@ -51,6 +51,7 @@ varying vec4 fColor;
 varying  vec2 fTexCoord;
 
 uniform sampler2D texture;
+uniform sampler2D texture2;
 
 uniform float colorChange;
 
@@ -60,10 +61,12 @@ void main()
     if(colorChange == 0.0){
    		gl_FragColor = texture2D( texture, fTexCoord );
    	}
-    else
+    else if(colorChange == 1.0)
     {
     	gl_FragColor = fColor;
     }
+    else
+     	gl_FragColor = texture2D( texture2, fTexCoord );
 }
 </script>
 

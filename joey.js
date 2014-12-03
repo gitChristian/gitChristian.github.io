@@ -73,12 +73,25 @@ function configureTexture( image ) {
     
    // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 	//gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-	
-	
-    
+
     gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
 }
+function configureTexture2( image2 ) {
+    texture2 = gl.createTexture();
+    gl.bindTexture( gl.TEXTURE_2D, texture2 );
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image2 );
+         
+    //generate a mipMap
+    gl.generateMipmap( gl.TEXTURE_2D );
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR );
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
+    
+   // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	//gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
+    gl.uniform1i(gl.getUniformLocation(program, "texture2"), 0);
+}
 window.onload = function init()
 {
     canvas = document.getElementById( "gl-canvas" );
@@ -106,7 +119,7 @@ window.onload = function init()
     
     Cube(vertices, points, normals);
 
-	console.log(texCoordsArray);
+	console.log(points);
 	
     program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
@@ -121,7 +134,12 @@ window.onload = function init()
     
     //buffer for holding the texture
     tBuffer = gl.createBuffer();
-gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
+	gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(texCoordsArray), gl.STATIC_DRAW );
+    
+    //buffer for holding the texture
+    var tBuffer2 = gl.createBuffer();
+	gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer2 );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(texCoordsArray), gl.STATIC_DRAW );
     
     //linked shader variable for texture
@@ -149,12 +167,6 @@ gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
     UNIFORM_lightPosition = gl.getUniformLocation(program, "lightPosition");
     UNIFORM_shininess = gl.getUniformLocation(program, "shininess");
     
-        var image = new Image();
-    	image.src = "rock_texture.jpg";
-    	image.onload = function() { 
-        configureTexture( image );
-    }
-    
     change = gl.getUniformLocation(program, "colorChange");
 
 	//Alternate between texture mapping and coloring.
@@ -162,7 +174,7 @@ gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
 	gl.uniform1f(change,  0.0);
 
     viewMatrix = lookAt(eye, at, up);
-    projectionMatrix = perspective(100, 2, 0.001, 100);
+    projectionMatrix = perspective(100, 2, 0.001, 70);
 
     timer.reset();
     gl.enable(gl.DEPTH_TEST);
@@ -189,9 +201,7 @@ function Quad( vertices, points, normals, v1, v2, v3, v4, normal){
     normals.push(normal);
 
     points.push(vertices[v1]);
-    
     texCoordsArray.push(vec2(texCoord[0][0]*75, texCoord[0][1]*22) );
-    
     points.push(vertices[v3]);
     texCoordsArray.push(vec2(texCoord[1][0]*75, texCoord[1][1]*22) );
     points.push(vertices[v4]);
@@ -199,27 +209,33 @@ function Quad( vertices, points, normals, v1, v2, v3, v4, normal){
     points.push(vertices[v1]);
     texCoordsArray.push(vec2(texCoord[0][0]*75, texCoord[0][1]*22) );
     points.push(vertices[v4]);
-    texCoordsArray.push(vec2(texCoord[2][0]*75, texCoord[2][1]*22) )
+    texCoordsArray.push(vec2(texCoord[2][0]*75, texCoord[2][1]*22) );
     points.push(vertices[v2]);
-    texCoordsArray.push(vec2(texCoord[3][0]*75, texCoord[3][1]*22) )
+    texCoordsArray.push(vec2(texCoord[3][0]*75, texCoord[3][1]*22) );
 }
 
 
 function render()
 {
+	var image1 = new Image();
+    	image1.src = "rock_texture.jpg";
+    	image1.onload = function() { 
+        configureTexture( image1 );
+    }
+    
+    tBuffer = gl.createBuffer();
+	gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(texCoordsArray), gl.STATIC_DRAW );
+
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     time += timer.getElapsedTime() / 1000;
     mvMatrix = mult(viewMatrix, rotate(0, [1, 0, 0]));
 
+	gl.uniform1f(change,  0.0);
+
     var ctm = mat4();
 	ctm = mult(ctm, mvMatrix);
 	ctm = mult(ctm, scale(vec3(75,22,65)));
-	
-
-    
-    
-	
-	
 	
 	
     if(iKey)
@@ -241,15 +257,25 @@ function render()
     gl.uniform4fv(UNIFORM_specularProduct, flatten(specularProduct));
     gl.uniform3fv(UNIFORM_lightPosition,  flatten(lightPosition));
     gl.uniform1f(UNIFORM_shininess,  shininess);
-
-    gl.drawArrays( gl.TRIANGLES, 0, 36);
+    
+    gl.drawArrays( gl.TRIANGLES, 30, 6);
     
 	var off = 0;
+	
+    gl.uniform1f(change,  0.0);
+    
+    var image2 = new Image();
+    	image2.src = "brick.jpg";
+    	image2.onload = function() { 
+        configureTexture2( image2 );
+    }
+    
+    tBuffer = gl.createBuffer();
+	gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(texCoordsArray), gl.STATIC_DRAW );
     
     for(var i =0; i<150; i++)
     {
-    	
-    	
 		ctm = mat4();
 		ctm = mult(ctm, mvMatrix);
 		ctm = mult(ctm, scale(vec3(2,30,2)));
@@ -261,7 +287,6 @@ function render()
 		gl.drawArrays( gl.TRIANGLES, 0, 36);
 		
 		off-=3;
-
 	}
 	
 	off=0;
