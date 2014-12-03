@@ -2,7 +2,10 @@ var canvas;
 var gl;
 var program;
 var change;
-
+var image1;
+var image2;
+var scrollLoc;
+var scroll = 0;
 var tBuffer;
 
 var length = 1;
@@ -92,6 +95,7 @@ function configureTexture2( image2 ) {
 
     gl.uniform1i(gl.getUniformLocation(program, "texture2"), 0);
 }
+
 window.onload = function init()
 {
     canvas = document.getElementById( "gl-canvas" );
@@ -169,12 +173,25 @@ window.onload = function init()
     
     change = gl.getUniformLocation(program, "colorChange");
 
+
+	scrollLoc = gl.getUniformLocation(program, "scroll");
 	//Alternate between texture mapping and coloring.
 
 	gl.uniform1f(change,  0.0);
 
     viewMatrix = lookAt(eye, at, up);
     projectionMatrix = perspective(100, 2, 0.001, 70);
+
+	image1 = new Image();
+    	image1.src = "rock_texture.jpg";
+    	image1.onload = function() { 
+        configureTexture( image1 );
+    }
+    image2 = new Image();
+    	image2.src = "brick.jpg";
+    	image2.onload = function() { 
+        configureTexture2( image2 );
+    }
 
     timer.reset();
     gl.enable(gl.DEPTH_TEST);
@@ -217,11 +234,8 @@ function Quad( vertices, points, normals, v1, v2, v3, v4, normal){
 
 function render()
 {
-	var image1 = new Image();
-    	image1.src = "rock_texture.jpg";
-    	image1.onload = function() { 
-        configureTexture( image1 );
-    }
+	scroll += .08;
+	gl.uniform1f(scrollLoc,  scroll);
     
     tBuffer = gl.createBuffer();
 	gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
@@ -238,17 +252,8 @@ function render()
 	ctm = mult(ctm, scale(vec3(75,22,65)));
 	
 	
-    if(iKey)
-    {	z+=.3;
-    	
-    	iKey = false;
-    }
-    if(kKey)
-    {
-    	z-=.3;
-    	kKey = false;
-    }
-	
+	z+=.08;
+
     gl.uniformMatrix4fv(UNIFORM_mvMatrix, false, flatten(ctm));
     gl.uniformMatrix4fv(UNIFORM_pMatrix, false, flatten(projectionMatrix));
 
@@ -264,11 +269,7 @@ function render()
 	
     gl.uniform1f(change,  0.0);
     
-    var image2 = new Image();
-    	image2.src = "brick.jpg";
-    	image2.onload = function() { 
-        configureTexture2( image2 );
-    }
+
     
     tBuffer = gl.createBuffer();
 	gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
@@ -293,8 +294,6 @@ function render()
 	
 	for(var i =0; i<150; i++)
     {
-    	
-    	
 		ctm = mat4();
 		ctm = mult(ctm, mvMatrix);
 		ctm = mult(ctm, scale(vec3(2,30,2)));
@@ -306,9 +305,7 @@ function render()
 		gl.drawArrays( gl.TRIANGLES, 0, 36);
 		
 		off-=3;
-
 	}
-
 
 
     window.requestAnimFrame( render );

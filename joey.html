@@ -16,6 +16,7 @@ uniform float shininess;
 varying vec4 fColor;
 varying vec2 fTexCoord;
 
+uniform float scroll;
 
 void main() 
 {
@@ -38,6 +39,8 @@ void main()
     fColor.a  = 1.0;
 
 	fTexCoord = vTexCoord;
+	
+	fTexCoord.x = fTexCoord.x + scroll;
 
     gl_Position = pMatrix * vec4(pos, 1.0);
 } 
