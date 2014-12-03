@@ -182,11 +182,11 @@ window.onload = function init()
     viewMatrix = lookAt(eye, at, up);
     projectionMatrix = perspective(100, 2, 0.001, 70);
 
-	image1 = new Image();
+	/*image1 = new Image();
     	image1.src = "rock_texture.jpg";
     	image1.onload = function() { 
         configureTexture( image1 );
-    }
+    }*/
     image2 = new Image();
     	image2.src = "brick.jpg";
     	image2.onload = function() { 
@@ -234,25 +234,29 @@ function Quad( vertices, points, normals, v1, v2, v3, v4, normal){
 
 function render()
 {
-	scroll += .08;
-	gl.uniform1f(scrollLoc,  scroll);
-    
-    tBuffer = gl.createBuffer();
-	gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(texCoordsArray), gl.STATIC_DRAW );
-
-    gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     time += timer.getElapsedTime() / 1000;
-    mvMatrix = mult(viewMatrix, rotate(0, [1, 0, 0]));
 
+
+	//Automatic scrolling
+	scroll += .08;
+	//update the texture coordinates
+	if(scroll > 10.0)
+		scroll = 4.08;	  //Infinite drawing of the side buildings!
+	gl.uniform1f(scrollLoc,  scroll);
+
+	
+	
+	
+	mvMatrix = viewMatrix;
+	
 	gl.uniform1f(change,  0.0);
 
+
+	//Draw the world rectangle
     var ctm = mat4();
 	ctm = mult(ctm, mvMatrix);
 	ctm = mult(ctm, scale(vec3(75,22,65)));
-	
-	
-	z+=.08;
 
     gl.uniformMatrix4fv(UNIFORM_mvMatrix, false, flatten(ctm));
     gl.uniformMatrix4fv(UNIFORM_pMatrix, false, flatten(projectionMatrix));
@@ -265,23 +269,18 @@ function render()
     
     gl.drawArrays( gl.TRIANGLES, 30, 6);
     
-	var off = 0;
 	
-    gl.uniform1f(change,  0.0);
+    gl.uniform1f(change,  2.0);
     
-
     
-    tBuffer = gl.createBuffer();
-	gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(texCoordsArray), gl.STATIC_DRAW );
-    
-    for(var i =0; i<150; i++)
+    //Draw the left row of buildings
+    var off = 0;
+    for(var i =0; i < 15; i++)
     {
 		ctm = mat4();
 		ctm = mult(ctm, mvMatrix);
 		ctm = mult(ctm, scale(vec3(2,30,2)));
-		ctm = mult(ctm, translate(vec3((-36),0,(-8 + off + z))));
-
+		ctm = mult(ctm, translate(vec3((-36),0,(-8 + off + scroll))));
 		gl.uniformMatrix4fv(UNIFORM_mvMatrix, false, flatten(ctm));
 		gl.uniformMatrix4fv(UNIFORM_pMatrix, false, flatten(projectionMatrix));
 	
@@ -290,23 +289,22 @@ function render()
 		off-=3;
 	}
 	
+	
+	//Draw the right set of buildings
 	off=0;
-	
-	for(var i =0; i<150; i++)
+	for(var i = 0; i < 15; i++)
     {
 		ctm = mat4();
 		ctm = mult(ctm, mvMatrix);
 		ctm = mult(ctm, scale(vec3(2,30,2)));
-		ctm = mult(ctm, translate(vec3((+36),0,(-8 + off + z))));
+		ctm = mult(ctm, translate(vec3((+36),0,(-8 + off + scroll))));
 
 		gl.uniformMatrix4fv(UNIFORM_mvMatrix, false, flatten(ctm));
 		gl.uniformMatrix4fv(UNIFORM_pMatrix, false, flatten(projectionMatrix));
-	
 		gl.drawArrays( gl.TRIANGLES, 0, 36);
 		
 		off-=3;
 	}
-
 
     window.requestAnimFrame( render );
 }
