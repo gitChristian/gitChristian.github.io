@@ -2,6 +2,7 @@ var canvas;
 var gl;
 var program;
 
+//
 var buildingPointsArray1 = [], buildingPointsArray2 = [], buildingPointsArray3 = [], 
 	buildingPointsArray4 = [], buildingPointsArray5 = [];
 var buildingTexCoordsArray1 = [], buildingTexCoordsArray2 = [],buildingTexCoordsArray3 = [],
@@ -9,6 +10,7 @@ var buildingTexCoordsArray1 = [], buildingTexCoordsArray2 = [],buildingTexCoords
 var cubeTexCoordsArray = [];
 var cubeArray = [];
 
+//location in shaders
 var vPosition;
 var vBuildTexCoord;
 var samplerLoc;
@@ -23,6 +25,8 @@ var roofTex;
 var buildingGeoBuffer1,buildingGeoBuffer2,buildingGeoBuffer3,buildingGeoBuffer4, buildingGeoBuffer5;
 var buildingTexBuffer1,buildingTexBuffer2,buildingTexBuffer3,buildingTexBuffer4, buildingTexBuffer5;
 
+//transformation matrix
+var buildingCtm =mat4();
 
 var cubeVerticies = [
     vec4( -0.5, -0.5,  0.5, 1.0 ),
