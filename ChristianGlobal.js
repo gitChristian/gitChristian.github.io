@@ -2,8 +2,10 @@ var canvas;
 var gl;
 var program;
 
-var buildingPointsArray = [];
-var buildingTexCoordsArray = [];
+var buildingPointsArray1 = [], buildingPointsArray2 = [], buildingPointsArray3 = [], 
+	buildingPointsArray4 = [], buildingPointsArray5 = [];
+var buildingTexCoordsArray1 = [], buildingTexCoordsArray2 = [],buildingTexCoordsArray3 = [],
+	buildingTexCoordsArray4 = [], buildingTexCoordsArray5 = [];
 var cubeTexCoordsArray = [];
 var cubeArray = [];
 
@@ -14,11 +16,13 @@ var mvMatrixLoc, pMatrixLoc;
 
 
 //texture objects
-var buildingTex1,buildingTex2,buildingTex3,buildingTex4;
+var buildingTex1,buildingTex2,buildingTex3,buildingTex4, buildingTex5;
+var roofTex;
 
 //buffers
-var buildingGeoBuffer1,buildingGeoBuffer2,buildingGeoBuffer3,buildingGeoBuffer4;
-var buildingTexBuffer1,buildingTexBuffer2,buildingTexBuffer3,buildingTexBuffer4;
+var buildingGeoBuffer1,buildingGeoBuffer2,buildingGeoBuffer3,buildingGeoBuffer4, buildingGeoBuffer5;
+var buildingTexBuffer1,buildingTexBuffer2,buildingTexBuffer3,buildingTexBuffer4, buildingTexBuffer5;
+
 
 var cubeVerticies = [
     vec4( -0.5, -0.5,  0.5, 1.0 ),
