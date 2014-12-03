@@ -11,26 +11,26 @@ function makeBuilding(storeArray, texArray, scaleMatrix, depth, count)
 	
 	var yFactor = scaleMatrix[1][1];
 	var temp;
-	var randX = Math.floor((Math.random() * 3) + count);
-	var randY = Math.floor((Math.random() * 3) + count);
+	var randX = Math.floor((random() * 3) + count);
+	var randY = Math.floor((random() * 3) + count);
 	
 	for(var i =0; i <18; i++)
 	{
 		temp = (multChris(scaleMatrix, cubeArray[i]));
-		storeArray.push( multChris( translate(randX, randY, depth ), temp ) );
+		storeArray.push( multChris( translate(randX, 0, depth ), temp ) );
 		texArray.push( vec2(cubeTexCoordsArray[i][0], cubeTexCoordsArray[i][1] * yFactor) );
 		
 	}
 	for(i =18; i <24; i++)
 	{
 		temp = (multChris(scaleMatrix, cubeArray[i]));
-		storeArray.push( multChris( translate(randX, randY, depth ), temp ) );
+		storeArray.push( multChris( translate(randX, 0, depth ), temp ) );
 		texArray.push( cubeTexCoordsArray[i] );
 	}
 	for(i =24; i <36; i++)
 	{
 		temp = (multChris(scaleMatrix, cubeArray[i]));
-		storeArray.push( multChris( translate(randX, randY, depth ), temp ) );
+		storeArray.push( multChris( translate(randX, 0, depth ), temp ) );
 		texArray.push( vec2(cubeTexCoordsArray[i][0], cubeTexCoordsArray[i][1] * yFactor) );
 	}
 	
@@ -159,13 +159,19 @@ function loadTextures()
 
 function loadBuildings(depth)
 {
+	//produces integer 1-5
+	var r1 = Math.floor((random() * 5) + 1);
+	var r2 = Math.floor((random() * 5) + 1);
+	var r3 = Math.floor((random() * 5) + 1);
+	var r4 = Math.floor((random() * 5) + 1);
+	var r5 = Math.floor((random() * 5) + 1);
 	
-	//building1
-	makeBuilding(buildingPointsArray1,buildingTexCoordsArray1, scale(1,5,1), depth, 1 ); //1-3
-	makeBuilding(buildingPointsArray2,buildingTexCoordsArray2, scale(1,4,1), depth, -2 ); // -2-0
-	makeBuilding(buildingPointsArray3,buildingTexCoordsArray3, scale(1,3,1), depth, 4 ); //4-6
-	makeBuilding(buildingPointsArray4,buildingTexCoordsArray4, scale(1,2,1), depth, -5 ); //-5- -2
-	makeBuilding(buildingPointsArray5,buildingTexCoordsArray5, scale(1,1,1), depth, 7 ); //7-9
+	//make 5 buildings
+	makeBuilding(buildingPointsArray1,buildingTexCoordsArray1, scale(1,r1,1), depth, 1 ); //1-3
+	makeBuilding(buildingPointsArray2,buildingTexCoordsArray2, scale(1,r2,1), depth, -2 ); // -2-0
+	makeBuilding(buildingPointsArray3,buildingTexCoordsArray3, scale(1,r3,1), depth, 4 ); //4-6
+	makeBuilding(buildingPointsArray4,buildingTexCoordsArray4, scale(1,r4,1), depth, -5 ); //-5- -2
+	makeBuilding(buildingPointsArray5,buildingTexCoordsArray5, scale(1,r5,1), depth, 7 ); //7-9
 }
 
 function loadBuffers()
@@ -216,78 +222,121 @@ function loadBuffers()
 }
 
 
+function decideTexture(num)
+{
+	var randomTex;
+	
+	switch(num) {
+    case 1:
+        randomTex = buildingTex1
+        break;
+    case 2:
+        randomTex = buildingTex2
+        break;
+	case 3:
+        randomTex = buildingTex3
+        break;
+	case 4:
+        randomTex = buildingTex4
+        break;
+	case 5:
+        randomTex = buildingTex5
+        break;
+	}
+	return randomTex;
+}
+
 function populateBuildings()
 {
-
-
-		
+	var randomTex;
+	
+	//building1
+	var r1 = Math.floor((random() * 5) + 1);
+	randomTex = decideTexture(r1);
+	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer1 );
 	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer1 );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
-	gl.bindTexture(gl.TEXTURE_2D, buildingTex1);
+	gl.bindTexture(gl.TEXTURE_2D, randomTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 0, 18 );
 	gl.bindTexture(gl.TEXTURE_2D, roofTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );
-	gl.bindTexture(gl.TEXTURE_2D, buildingTex1);
+	gl.bindTexture(gl.TEXTURE_2D, randomTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 24, 12 );
+	
+	//building2
+	r1 = Math.floor((random() * 5) + 1);
+	randomTex = decideTexture(r1);
 	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer2 );
 	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer2 );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
-	gl.bindTexture(gl.TEXTURE_2D, buildingTex2);
+	gl.bindTexture(gl.TEXTURE_2D, randomTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 0, 18 );
 	gl.bindTexture(gl.TEXTURE_2D, roofTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );
-	gl.bindTexture(gl.TEXTURE_2D, buildingTex2);
+	gl.bindTexture(gl.TEXTURE_2D, randomTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 24, 12 );
+	
+	//building3
+	r1 = Math.floor((random() * 5) + 1);
+	randomTex = decideTexture(r1);
 	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer3 );
 	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer3 );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
-	gl.bindTexture(gl.TEXTURE_2D, buildingTex3);
+	gl.bindTexture(gl.TEXTURE_2D, randomTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 0, 18 );
 	gl.bindTexture(gl.TEXTURE_2D, roofTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );
-	gl.bindTexture(gl.TEXTURE_2D, buildingTex3);
+	gl.bindTexture(gl.TEXTURE_2D, randomTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 24, 12 );
+	
+	//building4
+	r1 = Math.floor((random() * 5) + 1);
+	randomTex = decideTexture(r1);
 	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer4 );
 	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer4 );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
-	gl.bindTexture(gl.TEXTURE_2D, buildingTex4);
+	gl.bindTexture(gl.TEXTURE_2D, randomTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 0, 18 );
 	gl.bindTexture(gl.TEXTURE_2D, roofTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );
-	gl.bindTexture(gl.TEXTURE_2D, buildingTex4);
+	gl.bindTexture(gl.TEXTURE_2D, randomTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 24, 12 );
+	
+	//building5
+	r1 = Math.floor((random() * 5) + 1);
+	randomTex = decideTexture(r1);
 	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer5 );
 	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer5 );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
-	gl.bindTexture(gl.TEXTURE_2D, buildingTex5);
+	gl.bindTexture(gl.TEXTURE_2D, randomTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 0, 18 );
 	gl.bindTexture(gl.TEXTURE_2D, roofTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );
-	gl.bindTexture(gl.TEXTURE_2D, buildingTex5);
+	gl.bindTexture(gl.TEXTURE_2D, randomTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 24, 12 );
 	
