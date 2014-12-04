@@ -72,8 +72,9 @@ function makeWorld()
 {
 	for(var i=0; i <36; i++)
 	{
-		worldArray.push( (multChris(scale(40,20,100), cubeArray[i])) ); 
-		worldTexCoords.push( ( vec2(cubeTexCoordsArray[i][0] *20, cubeTexCoordsArray[i][1] * 10) ) );
+		worldArray.push( (multChris(scale(160,40,100), cubeArray[i])) ); 
+		worldTexCoords.push( ( vec2(cubeTexCoordsArray[i][0] *10, cubeTexCoordsArray[i][1] * 10) ) );
+		worldTexCoordsFar.push( ( vec2(cubeTexCoordsArray[i][0] *1, cubeTexCoordsArray[i][1] * .5) ) );
 		
 	}
 }
@@ -179,7 +180,7 @@ function loadTextures()
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
     }
-	floorTex.image.src = "images/ground.jpg";
+	floorTex.image.src = "images/lava.jpg";
 	
 	//world sky
 	skyTex = gl.createTexture();
@@ -194,6 +195,20 @@ function loadTextures()
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
     }
 	skyTex.image.src = "images/space.bmp";
+	
+	
+	farTex = gl.createTexture();
+	farTex.image = new Image();
+    farTex.image.onload = function(){
+	gl.bindTexture(gl.TEXTURE_2D, farTex);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, farTex.image);
+	gl.generateMipmap(gl.TEXTURE_2D);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+    }
+	farTex.image.src = "images/skybox/negx.jpg";
 
 }
 
@@ -261,9 +276,15 @@ function loadBuffers()
 	worldBuffer= gl.createBuffer();
 	gl.bindBuffer( gl.ARRAY_BUFFER, worldBuffer );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(worldArray), gl.STATIC_DRAW );
+	
 	floorTexBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, floorTexBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(worldTexCoords), gl.STATIC_DRAW );
+    
+    farTexBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, farTexBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(worldTexCoordsFar), gl.STATIC_DRAW );
+    
 	
 }
 
@@ -401,6 +422,7 @@ function populateWorld()
 	
 	gl.bindTexture(gl.TEXTURE_2D, skyTex);
 	gl.uniform1i(samplerLoc, 0);
-	gl.drawArrays( gl.TRIANGLES, 18, 6 );
+	gl.drawArrays( gl.TRIANGLES, 18, 6 );	
+	
 }
 
