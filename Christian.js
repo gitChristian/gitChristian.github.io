@@ -7,7 +7,7 @@ window.onload = function init() {
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
-    gl.clearColor( 0, 0, 1, 1.0 );
+    gl.clearColor( 0, 0, 0, 1.0 );
     gl.enable(gl.DEPTH_TEST);
 	
 	//  Load shaders and initialize attribute buffers
@@ -16,8 +16,8 @@ window.onload = function init() {
 	
 	loadTextures();
 	makeCube();
+	makeWorld();
 
-	
 	//get locations in shader and enable variables
 	vPosition = gl.getAttribLocation( program, "vPosition" );
 	vBuildTexCoord = gl.getAttribLocation( program, "vBuildTexCoord" );
@@ -34,8 +34,8 @@ window.onload = function init() {
 	//mvMatrix = mult( rotate(50, [5,0,0]  ), mvMatrix);
 	//mvMatrix = mult( rotate(10, [0,1,0]  ), mvMatrix);
 	mvMatrix = mult( translate(-3,0,-5), mvMatrix);
-	
-	var pMatrix = perspective( 90, 2, 1, 500);
+
+	var pMatrix = perspective( 70, canvas.width/canvas.height, 1, 500);
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
     gl.uniformMatrix4fv(pMatrixLoc, false, flatten(pMatrix));
 	//end group code
@@ -71,13 +71,14 @@ var render = function(){
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
 	
-	for(var i =0; i >-50; i--)
+	for(var i =0; i >-10; i--)
 	{
 		loadBuildings(i);
 		loadBuffers();
 		populateBuildings();
 	}	
 	seed=1;
+	populateWorld();
 	
 	window.requestAnimFrame( render );
 }

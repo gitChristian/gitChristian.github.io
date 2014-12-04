@@ -2,13 +2,16 @@ var canvas;
 var gl;
 var program;
 
-//
+//geometry arrays
 var buildingPointsArray1 = [], buildingPointsArray2 = [], buildingPointsArray3 = [], 
 	buildingPointsArray4 = [], buildingPointsArray5 = [];
+var cubeArray = [];
+var worldArray = [];
+//texture coordinate arrays
 var buildingTexCoordsArray1 = [], buildingTexCoordsArray2 = [],buildingTexCoordsArray3 = [],
 	buildingTexCoordsArray4 = [], buildingTexCoordsArray5 = [];
 var cubeTexCoordsArray = [];
-var cubeArray = [];
+var worldTexCoords=[];
 
 //location in shaders
 var vPosition;
@@ -19,11 +22,12 @@ var mvMatrixLoc, pMatrixLoc;
 
 //texture objects
 var buildingTex1,buildingTex2,buildingTex3,buildingTex4, buildingTex5;
-var roofTex;
+var roofTex, floorTex, skyTex;
 
 //buffers
 var buildingGeoBuffer1,buildingGeoBuffer2,buildingGeoBuffer3,buildingGeoBuffer4, buildingGeoBuffer5;
 var buildingTexBuffer1,buildingTexBuffer2,buildingTexBuffer3,buildingTexBuffer4, buildingTexBuffer5;
+var worldBuffer, floorTexBuffer;
 
 //transformation matrix
 var buildingCtm =mat4();

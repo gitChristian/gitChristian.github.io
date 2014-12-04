@@ -66,6 +66,17 @@ function makeCube()
     quad( 5, 4, 0, 1 );
 }
 
+//only can call once,
+//makes the world cube
+function makeWorld()
+{
+	for(var i=0; i <36; i++)
+	{
+		worldArray.push( (multChris(scale(40,20,100), cubeArray[i])) ); 
+		worldTexCoords.push( ( vec2(cubeTexCoordsArray[i][0] *20, cubeTexCoordsArray[i][1] * 10) ) );
+		
+	}
+}
 
 
 function loadTextures()
@@ -142,6 +153,7 @@ function loadTextures()
     }
 	buildingTex5.image.src = "images/buildings/5.jpg";
 	
+	//building roof
 	roofTex = gl.createTexture();
 	roofTex.image = new Image();
     roofTex.image.onload = function(){
@@ -154,6 +166,34 @@ function loadTextures()
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
     }
 	roofTex.image.src = "images/roof.jpg";
+	
+	//world floor
+	floorTex = gl.createTexture();
+	floorTex.image = new Image();
+    floorTex.image.onload = function(){
+	gl.bindTexture(gl.TEXTURE_2D, floorTex);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, floorTex.image);
+	gl.generateMipmap(gl.TEXTURE_2D);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+    }
+	floorTex.image.src = "images/ground.jpg";
+	
+	//world sky
+	skyTex = gl.createTexture();
+	skyTex.image = new Image();
+    skyTex.image.onload = function(){
+	gl.bindTexture(gl.TEXTURE_2D, skyTex);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, skyTex.image);
+	gl.generateMipmap(gl.TEXTURE_2D);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+    }
+	skyTex.image.src = "images/space.bmp";
 
 }
 
@@ -196,7 +236,6 @@ function loadBuffers()
 	buildingGeoBuffer3= gl.createBuffer();
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer3 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray3), gl.STATIC_DRAW );
-    
 	buildingTexBuffer3 = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer3 );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray3), gl.STATIC_DRAW );
@@ -205,7 +244,6 @@ function loadBuffers()
 	buildingGeoBuffer4= gl.createBuffer();
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer4 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray4), gl.STATIC_DRAW );
-    
 	buildingTexBuffer4 = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer4 );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray4), gl.STATIC_DRAW );
@@ -214,11 +252,19 @@ function loadBuffers()
 	buildingGeoBuffer5= gl.createBuffer();
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer5 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray5), gl.STATIC_DRAW );
-    
 	buildingTexBuffer5 = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer5 );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray5), gl.STATIC_DRAW );
-
+	
+	//world
+	
+	worldBuffer= gl.createBuffer();
+	gl.bindBuffer( gl.ARRAY_BUFFER, worldBuffer );
+	gl.bufferData( gl.ARRAY_BUFFER, flatten(worldArray), gl.STATIC_DRAW );
+	floorTexBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, floorTexBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(worldTexCoords), gl.STATIC_DRAW );
+	
 }
 
 
@@ -341,11 +387,20 @@ function populateBuildings()
 	gl.drawArrays( gl.TRIANGLES, 24, 12 );
 	
 
-
-
-
-
 }
 
-
+function populateWorld()
+{
+	gl.bindBuffer( gl.ARRAY_BUFFER, worldBuffer );
+	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
+	gl.bindBuffer( gl.ARRAY_BUFFER, floorTexBuffer );
+	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
+	gl.bindTexture(gl.TEXTURE_2D, floorTex);
+	gl.uniform1i(samplerLoc, 0);
+	gl.drawArrays( gl.TRIANGLES, 12, 6 );
+	
+	gl.bindTexture(gl.TEXTURE_2D, skyTex);
+	gl.uniform1i(samplerLoc, 0);
+	gl.drawArrays( gl.TRIANGLES, 18, 6 );
+}
 
