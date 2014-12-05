@@ -74,6 +74,9 @@ window.onload = function init()
         VA, B, C, D, E, F, G, H, I, J, K, L,
       //38 39 40 41 42 43 44 45 46 47 48 49 
         //BOTTOM
+        VA2, VA0, VA3, Z1
+    //  50   51   52   53
+    //missed part
         ];
     
     var test = [
@@ -91,7 +94,7 @@ window.onload = function init()
     
     var Indices = 
     [
-                 vertices[0], vertices[1],vertices[2],
+                vertices[0], vertices[1],vertices[2],
                 vertices[0], vertices[2], vertices[3],                               // Front face
                 vertices[4], vertices[5], vertices[6], 
                 vertices[4], vertices[6], vertices[7],
@@ -117,7 +120,10 @@ window.onload = function init()
                 vertices[38],vertices[45],vertices[46],    
                 vertices[38],vertices[46],vertices[47],   
                 vertices[38],vertices[47],vertices[48],   
-                vertices[38],vertices[48],vertices[49] //bottom   
+                vertices[38],vertices[48],vertices[49],
+                vertices[50],vertices[51],vertices[53],
+                vertices[52],vertices[51],vertices[53], //missed part
+                 //bottom   
 
     ];
 
@@ -154,6 +160,6 @@ window.onload = function init()
 var render = function(){
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     
-    gl.drawArrays( gl.TRIANGLES, 0, 49 );
+    gl.drawArrays( gl.TRIANGLES, 0, 87 );
     
 }
