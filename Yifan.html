@@ -3,12 +3,15 @@
 <head>
 <title>plane test</title>
 
-<script type="text/javascript" src="..common/glMatrix-0.9.5.min.js"></script>
-<script type="text/javascript" src="..common/webgl-utils.js"></script>
+<script type="text/javascript" src="Common/glMatrix-0.9.5.min.js"></script>
+<script type="text/javascript" src="Common/webgl-utils.js"></script>
+<script type="text/javascript" src="Common/webgl-utils.js"></script>
+<script type="text/javascript" src="Common/initShaders.js"></script>
+<script type="text/javascript" src="Common/math.js"></script>
 <script type="text/javascript" src="Yifan.js"></script>
 
 
-<script id="shader-fs" type="x-shader/x-fragment">
+<script id="fragment-shader" type="x-shader/x-fragment">
     precision mediump float;
 
     varying vec4 vColor;
@@ -18,25 +21,35 @@
     }
 </script>
 
-<script id="shader-vs" type="x-shader/x-vertex">
-    attribute vec3 aVertexPosition;
-    attribute vec4 aVertexColor;
+<script id="vertex-shaer" type="x-shader/x-vertex">
+    attribute vec3 vPosition;
+   
 
-    uniform mat4 uMVMatrix;
-    uniform mat4 uPMatrix;
-
-    varying vec4 vColor;
+   
 
     void main(void) {
         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-        vColor = aVertexColor;
+        vColor = vec4(0.0,0.0,0.0,1.0);
+    }
+</script>
+<script>
+function webGLStart() {
+        var canvas = document.getElementById("plane-canvas");
+        initGL(canvas);
+        initShaders()
+        initBuffers();
+
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        gl.enable(gl.DEPTH_TEST);
+
     }
 </script>
 </head>
-<body onload="webGLStart();">
+<body>
    
 
-    <canvas id="plane-canvas" style="border: none;" width="1500" height="1500"></canvas>
+    <canvas id="plane-canvas" style="border: none;" width="1024" height="512">
+    Oops ... your browser doesn't support the HTML5 canvas element</canvas>
 
     
 </body>
