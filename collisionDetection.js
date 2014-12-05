@@ -2,7 +2,8 @@
 // I suppose that the buildings are created by transforming a unit cube, thus the bounding box can be 
 // created in the same way (transforming a unit bounding box)
 
-// All functions are using vec4 to represent points and vectors
+// cross(u, v) only works for vec3
+// translate() and scale() create 4x4 matrices
 
 // Need to include MV.js
 //---------------------------------------------------------------------------------------------------
@@ -10,10 +11,10 @@ var unitAABBmin = vec4(-0.5, -0.5, -0.5, 1);
 var unitAABBmax = vec4(0.5, 0.5, 0.5, 1);
 var AABBminArray = [];
 var AABBmaxArray = [];
-var planeAABBmin;
-var planeAABBmax;
-var currPlaneAABBmin;
-var currPlaneAABBmax;
+var planeAABBmin = vec4();
+var planeAABBmax = vec4();
+var currPlaneAABBmin = vec4();
+var currPlaneAABBmax = vec4();
 
 // Given a transformation matrix (transformation from object coordinate to world coordinate), create
 // the corresponding Axis-Aligned Bounding Box and push it to the array.
@@ -33,14 +34,17 @@ function clearAABB() {
 
 // Take the vertices buffer of the plane as a input, create an Axis-Aligned Bounding Box for the plane
 function createPlaneAABB(buffer) {
-	planeAABBmax = buffer[0];
-	planeAABBmin = buffer[0];
+	for (var k = 0; k < 3; ++k)
+	{
+		planeAABBmax[k] = buffer[0][k];
+		planeAABBmin[k] = buffer[0][k];
+	}
 	for (var i = 1; i < buffer.length; ++i)
 	{
 		for (var j = 0; j < 3; ++j)
 		{
 			planeAABBmax[j] = Math.max( planeAABBmax[j], buffer[i][j] );
-			planeAABBmin[j] = Math.min( planeAABBmax[j], buffer[i][j] );
+			planeAABBmin[j] = Math.min( planeAABBmin[j], buffer[i][j] );
 		}
 	}
 }
@@ -137,7 +141,7 @@ function intersect_triangle_triangle (V0, V1, V2, W0, W1, W2) {
 function intersect_primitive_primitive (buffer1, buffer2) {
 	for (var i = 0; i < buffer1.length; i += 3)
 	{
-		for (var i = 0; i < buffer2.length; j += 3)
+		for (var j = 0; j < buffer2.length; j += 3)
 		{
 			if ( intersect_triangle_triangle(buffer1[i], buffer1[i+1], buffer1[i+2], buffer2[j], buffer2[j+1], buffer2[j+2]) )
 				return true;
