@@ -160,6 +160,6 @@ window.onload = function init()
 var render = function(){
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     
-    gl.drawArrays( gl.TRIANGLES, 0, 87 );
+    gl.drawArrays( gl.LINE_LOOP, 0, 87 );
     
 }
