@@ -104,7 +104,11 @@ window.onload = function init()
                 vertices[12],vertices[13],vertices[14],      //left wing
                 vertices[15],vertices[16],vertices[18],
                 vertices[16],vertices[17],vertices[18],                                //back
-                vertices[27],vertices[28],vertices[29], 
+                vertices[19],vertices[20],vertices[22],
+                vertices[20],vertices[21],vertices[22], //left back part
+                vertices[23],vertices[24],vertices[26],
+                vertices[24],vertices[25],vertices[26], //right
+                vertices[27],vertices[28],vertices[29],
                 vertices[27],vertices[29],vertices[30],
                 vertices[27],vertices[30],vertices[32],
                 vertices[30],vertices[31],vertices[32],           //right wing
@@ -160,6 +164,6 @@ window.onload = function init()
 var render = function(){
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     
-    gl.drawArrays( gl.LINE_LOOP, 0, 87 );
+    gl.drawArrays( gl.LINE_LOOP, 0, 99 );
     
 }
