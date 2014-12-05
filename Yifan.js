@@ -91,34 +91,33 @@ window.onload = function init()
     
     var Indices = 
     [
-                vec3( vertices[0], vertices[1],vertices[ 2]),
-                vec3(vertices[0], vertices[2], vertices[3]),                               // Front face
-                vec3(vertices[4], vertices[5], vertices[6]), 
-                vec3(vertices[4], vertices[6], vertices[7]),
-                vec3(vertices[4], vertices[7], vertices[8]),                      // left front armor
-                vec3(vertices[9],vertices[10],vertices[11]),    
-                vec3(vertices[9],vertices[11],vertices[14]),   
-                vec3(vertices[11],vertices[12],vertices[14]),
-                vec3(vertices[12],vertices[13],vertices[14]),      //left wing
-                vec3(vertices[15],vertices[16],vertices[18]),
-                vec3(vertices[16],vertices[17],vertices[18]),                                //back
-                vec3(vertices[27],vertices[28],vertices[29]), 
-                vec3(vertices[27],vertices[29],vertices[30]),
-               vec3( vertices[27],vertices[30],vertices[32]),
-                vec3(vertices[30],vertices[31],vertices[32]),           //right wing
-                vec3(vertices[33],vertices[34],vertices[37]),     
-                vec3(vertices[34],vertices[36],vertices[37]),    
-                vec3(vertices[34],vertices[35],vertices[36]),                         //right armor
-                vec3(vertices[38],vertices[39],vertices[40]),      
-               vec3( vertices[38],vertices[40],vertices[41]),    
-               vec3( vertices[38],vertices[41],vertices[42]),   
-               vec3( vertices[38],vertices[42],vertices[43]),   
-               vec3( vertices[38],vertices[43],vertices[44]),   
-               vec3( vertices[38],vertices[44],vertices[45]),      
-                vec3(vertices[38],vertices[45],vertices[46]),    
-                vec3(vertices[38],vertices[46],vertices[47]),   
-                vec3(vertices[38],vertices[47],vertices[48]),   
-               vec3( vertices[38],vertices[48],vertices[49]) //bottom   
+                 vertices[0], vertices[1],vertices[2],
+                vertices[0], vertices[2], vertices[3],                               // Front face
+                vertices[4], vertices[5], vertices[6], 
+                vertices[4], vertices[6], vertices[7],
+                vertices[9],vertices[10],vertices[11],    
+                vertices[9],vertices[11],vertices[14],   
+                vertices[11],vertices[12],vertices[14],
+                vertices[12],vertices[13],vertices[14],      //left wing
+                vertices[15],vertices[16],vertices[18],
+                vertices[16],vertices[17],vertices[18],                                //back
+                vertices[27],vertices[28],vertices[29], 
+                vertices[27],vertices[29],vertices[30],
+                vertices[27],vertices[30],vertices[32],
+                vertices[30],vertices[31],vertices[32],           //right wing
+                vertices[33],vertices[34],vertices[37],     
+                vertices[34],vertices[36],vertices[37],    
+                vertices[34],vertices[35],vertices[36],                         //right armor
+                vertices[38],vertices[39],vertices[40],      
+                vertices[38],vertices[40],vertices[41],    
+                vertices[38],vertices[41],vertices[42],   
+                vertices[38],vertices[42],vertices[43],   
+                vertices[38],vertices[43],vertices[44],   
+                vertices[38],vertices[44],vertices[45],      
+                vertices[38],vertices[45],vertices[46],    
+                vertices[38],vertices[46],vertices[47],   
+                vertices[38],vertices[47],vertices[48],   
+                vertices[38],vertices[48],vertices[49] //bottom   
 
     ];
 
@@ -128,7 +127,7 @@ window.onload = function init()
     
     positionBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, positionBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(vertices), gl.STATIC_DRAW );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(Indices), gl.STATIC_DRAW );
     
     ATTRIBUTE_position = gl.getAttribLocation( program, "vPosition" );
     gl.enableVertexAttribArray( ATTRIBUTE_position );
@@ -142,8 +141,8 @@ window.onload = function init()
 	var pMatrix = perspective( 120, canvas.width/canvas.height, .0001, 100);
 	//var pMatrix = mat4();
 	var mvMatrix = mat4();
-	mvMatrix = mult(mvMatrix, translate(vec3(0,0,-1.3)));
-	mvMatrix = mult(mvMatrix, rotate(30,[1,0,0]));
+	mvMatrix = mult(mvMatrix, translate(vec3(0,0,-.7)));
+	mvMatrix = mult(mvMatrix, rotate(90,[1,0,0]));
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
     gl.uniformMatrix4fv(pMatrixLoc, false, flatten(pMatrix));
 
