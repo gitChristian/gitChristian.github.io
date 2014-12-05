@@ -63,13 +63,15 @@ window.onload = function init() {
 		}
 	};
 	
-	
+	createPlaneAABB(cubeArray);
     render();
 }
 
 var render = function(){
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
+	clearAABB();
+	updatePlaneAABB( translate(-mvMatrix[0][3], -mvMatrix[1][3], -mvMatrix[2][3]) );
 	
 	for(var i =0; i >-10; i--)
 	{
@@ -79,6 +81,8 @@ var render = function(){
 	}	
 	seed=1;
 	populateWorld();
+	
+	document.getElementById('collision').innerHTML = detectCollision();
 	
 	window.requestAnimFrame( render );
 }

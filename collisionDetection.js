@@ -49,6 +49,11 @@ function createPlaneAABB(buffer) {
 	}
 }
 
+function updatePlaneAABB(ctm) {
+	currPlaneAABBmax = matMultVec( ctm, planeAABBmax );
+	currPlaneAABBmin = matMultVec( ctm, planeAABBmin );
+}
+
 // Return true if collision detected
 function detectCollision() {
 	for (var i = 0; i < AABBmaxArray.length; ++i)
