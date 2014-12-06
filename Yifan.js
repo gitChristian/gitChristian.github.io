@@ -94,13 +94,13 @@ window.onload = function init()
     
     var Indices = 
     [
-                vertices[0], vertices[1],vertices[2],  //VA VA2 VA0, checked 12/5
+                vertices[0], vertices[1], vertices[2],  //VA VA2 VA0, checked 12/5
                 vertices[0], vertices[2], vertices[3], //VA VA0 VA3, checked 12/5                              // Front face
                 vertices[4], vertices[5], vertices[6], //Z1 VA2 Z4, checked 12/5
                 vertices[4], vertices[6], vertices[7], //Z1 Z4 Z5, checked 12/5
                 vertices[4], vertices[7], vertices[15],  //Z1 Z5 F, added 12/5
-                vertices[9],vertices[10],vertices[11], //Z4 B C, checked 12/5
-                vertices[9],vertices[11],vertices[14], //Z4 C Z5, checked 12/5
+                vertices[9], vertices[10],vertices[11], //Z4 B C, checked 12/5
+                vertices[9], vertices[11],vertices[14], //Z4 C Z5, checked 12/5
                 vertices[11],vertices[12],vertices[14], //C D Z5, checked 12/5
                 vertices[12],vertices[13],vertices[14], //D E Z5, checked 12/5     //left wing
                 //Y5 Y4 G, checked 12/5//right
@@ -141,7 +141,7 @@ window.onload = function init()
                 vertices[38],vertices[47],vertices[48],   
                 vertices[38],vertices[48],vertices[49],
                 vertices[50],vertices[51],vertices[53],
-                vertices[52],vertices[51],vertices[53], //missed part
+                vertices[52],vertices[51],vertices[53] //missed part
                  //bottom   
 
     ];
@@ -178,7 +178,7 @@ window.onload = function init()
 
 var render = function(){
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    
     gl.drawArrays( gl.LINE_LOOP, 0, 102 );
+    //gl.drawArrays( gl.TRIANGLES, 0, 102 );
     
 }
