@@ -436,9 +436,9 @@ function drawPlane()
 {
 	gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
 	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
-	gl.uniform1i(changeColorLoc, 1.0);
+	gl.uniform1f(changeColorLoc, 1.0);
 	gl.drawArrays( gl.LINE_LOOP, 0, 87 );
-	gl.uniform1i(changeColorLoc, 0.0);
+	gl.uniform1f(changeColorLoc, 0.0);
 	
 	
 }

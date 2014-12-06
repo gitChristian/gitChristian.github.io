@@ -31,14 +31,14 @@ window.onload = function init() {
 	//group code
 	mvMatrixLoc = gl.getUniformLocation( program, "mvMatrix" );
     pMatrixLoc = gl.getUniformLocation( program, "pMatrix" );
-	changeColorLoc = gl.getUniformLocation( program, "changeColor" );
+	changeColorLoc = gl.getUniformLocation( program, "colorChange" );
 	
-	gl.uniform1i(changeColorLoc, 0.0);
+	gl.uniform1f(changeColorLoc, 0.0);
 	
 	 mvMatrix =mat4();
 	//mvMatrix = mult( rotate(50, [5,0,0]  ), mvMatrix);
 	//mvMatrix = mult( rotate(10, [0,1,0]  ), mvMatrix);
-	mvMatrix = mult( translate(-3,0,-5), mvMatrix);
+	mvMatrix = mult( translate(-3,0,-12), mvMatrix);
 
 	var pMatrix = perspective( 70, canvas.width/canvas.height, 1, 500);
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
@@ -79,6 +79,7 @@ var render = function(){
 	clearAABB();
 	updatePlaneAABB( translate(-mvMatrix[0][3], -mvMatrix[1][3], -mvMatrix[2][3]) );
 	
+	
 	for(var i =0; i >-10; i--)
 	{
 		loadBuildings(i);
@@ -87,7 +88,23 @@ var render = function(){
 	}	
 	seed=1;
 	populateWorld();
-	drawPlane();
+	
+	gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
+	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
+	gl.uniform1f(changeColorLoc, 1.0);
+	
+	var ctm = mat4();
+	
+	//ctm = mult(ctm, mvMatrix);
+	ctm = mult(ctm, translate(vec3(0,-1,-3.5)));
+	ctm = mult(ctm, scale(vec3(2,2,2)));
+	
+	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
+	
+	gl.drawArrays( gl.TRIANGLES, 0,  36);
+	
+	gl.uniform1f(changeColorLoc, 0.0);
+	
 	document.getElementById('collision').innerHTML = detectCollision();
 	
 	window.requestAnimFrame( render );
