@@ -23,9 +23,14 @@ precision mediump float;
 varying  vec2 fBuildTexCoord;
 uniform sampler2D texture;
 
+uniform float colorChange;
+
 void main()
 {
+    if(colorChange==0.0)
     gl_FragColor = texture2D( texture, fBuildTexCoord );
+    else if(colorChange==1.0)
+    gl_FragColor = vec4(1,1,1,1);
 }
 </script>
 
@@ -36,6 +41,7 @@ void main()
 <script type="text/javascript" src="load.js"></script>
 <script type="text/javascript" src="Christian.js"></script>
 <script type="text/javascript" src="collisionDetection.js"></script>
+<script type="text/javascript" src="webgl-obj-loader.js"></script>
 
 <body>
 <canvas id="gl-canvas" width="1406" height="668">

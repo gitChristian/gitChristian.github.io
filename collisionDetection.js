@@ -7,7 +7,7 @@
 
 // Need to include MV.js
 //---------------------------------------------------------------------------------------------------
-var unitAABBmin = vec4(-0.25, -0.3, -1, 1);
+var unitAABBmin = vec4(-0.25, -0.3, 0, 1);
 var unitAABBmax = vec4(0.25, 0.3, 1, 1);
 var AABBminArray = [];
 var AABBmaxArray = [];

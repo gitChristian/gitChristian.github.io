@@ -1,6 +1,8 @@
 var mvMatrix;
 
+
 window.onload = function init() {
+
 
     canvas = document.getElementById( "gl-canvas" );
     gl = WebGLUtils.setupWebGL( canvas );
@@ -29,6 +31,9 @@ window.onload = function init() {
 	//group code
 	mvMatrixLoc = gl.getUniformLocation( program, "mvMatrix" );
     pMatrixLoc = gl.getUniformLocation( program, "pMatrix" );
+	changeColorLoc = gl.getUniformLocation( program, "changeColor" );
+	
+	gl.uniform1i(changeColorLoc, 0.0);
 	
 	 mvMatrix =mat4();
 	//mvMatrix = mult( rotate(50, [5,0,0]  ), mvMatrix);
@@ -38,6 +43,7 @@ window.onload = function init() {
 	var pMatrix = perspective( 70, canvas.width/canvas.height, 1, 500);
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
     gl.uniformMatrix4fv(pMatrixLoc, false, flatten(pMatrix));
+    
 	//end group code
 	window.onkeypress   = function(event) {
 		var key = String.fromCharCode(event.keyCode);
@@ -81,7 +87,7 @@ var render = function(){
 	}	
 	seed=1;
 	populateWorld();
-	
+	drawPlane();
 	document.getElementById('collision').innerHTML = detectCollision();
 	
 	window.requestAnimFrame( render );

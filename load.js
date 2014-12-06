@@ -277,13 +277,20 @@ function loadBuffers()
 	gl.bindBuffer( gl.ARRAY_BUFFER, worldBuffer );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(worldArray), gl.STATIC_DRAW );
 	
+	//floor
 	floorTexBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, floorTexBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(worldTexCoords), gl.STATIC_DRAW );
     
+    //far wall
     farTexBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, farTexBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(worldTexCoordsFar), gl.STATIC_DRAW );
+
+    //plane buffer
+   	planeBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(Indices), gl.STATIC_DRAW );
     
 	
 }
@@ -423,6 +430,16 @@ function populateWorld()
 	gl.bindTexture(gl.TEXTURE_2D, skyTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );	
+	
+}
+function drawPlane()
+{
+	gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
+	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
+	gl.uniform1i(changeColorLoc, 1.0);
+	gl.drawArrays( gl.LINE_LOOP, 0, 87 );
+	gl.uniform1i(changeColorLoc, 0.0);
+	
 	
 }
 
