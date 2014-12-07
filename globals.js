@@ -59,12 +59,10 @@ var roofTex, floorTex, skyTex, farTex;
 //buffers
 var buildingGeoBuffer1,buildingGeoBuffer2,buildingGeoBuffer3,buildingGeoBuffer4, buildingGeoBuffer5;
 var buildingTexBuffer1,buildingTexBuffer2,buildingTexBuffer3,buildingTexBuffer4, buildingTexBuffer5;
-var worldBuffer, floorTexBuffer, farTexBuffer, planeBuffer;
+var worldBuffer, floorTexBuffer, farTexBuffer, planeBuffer, bullshitTexBuffer;
 
 //transformation matrix
 var buildingCtm =mat4();
-
-
 
 var cubeVerticies = [
     vec4( -0.5, -0.5,  0.5, 1.0 ),
@@ -193,3 +191,6 @@ function random() {
     var x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
 }
+
+var rotation = 20;
+
