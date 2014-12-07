@@ -17,7 +17,10 @@ var degreeY = 0;
 var scrolling = 0;
 var limit = 0;
 
-var scrollEase = 0.08;
+var iterL = 0;
+var iterR = 0;
+
+var scrollEase = 0.64;
 
 window.onload = function init() {
 
@@ -38,7 +41,7 @@ window.onload = function init() {
 	loadTextures();
 	makeCube();
 	makeWorld();
-	for(var i=0; i<buildIter; i++)
+	for(var i=0; i>-buildIter*2; i-=2)
 	{
 		loadBuildings(i);
 	}
@@ -82,9 +85,9 @@ window.onload = function init() {
 	 mvMatrix =mat4();
 	//mvMatrix = mult( rotate(50, [5,0,0]  ), mvMatrix);
 	
-	mvMatrix = mult( translate(-3,0,-12), mvMatrix);
+	mvMatrix = mult( translate(-3,0,-50), mvMatrix);
 	
-	var pMatrix = perspective( 50, canvas.width/canvas.height, 1, 500);
+	var pMatrix = perspective( 10, canvas.width/canvas.height, 1, 1000);
 	mvMatrix = mult( rotate(0, [0,0,1]  ), mvMatrix);
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
     gl.uniformMatrix4fv(pMatrixLoc, false, flatten(pMatrix));
@@ -126,119 +129,136 @@ var render = function(){
 	//controls
     if(right)
     {
-    	if(degree<=10)
+    	
+    	if(iterR<=10)
     	{
-			degree += .8;
+    		iterR++;
 			mvMatrix = mult(rotate(.8,vec3(0,0,1)),mvMatrix);	
+			degree+=.8;
 		}
+		
+		/*
 		if(limit<=40)
 		{
 			mvMatrix = mult(rotate(.8,vec3(0,1,0)),mvMatrix);
 			limit += .8;
 		}
-		mvMatrix = mult(mvMatrix, translate(vec3(-.05,0,0)));
+		mvMatrix = mult(mvMatrix, translate(vec3(-.05,0,0)));*/
+		
+		mvMatrix = mult(mvMatrix, translate(vec3(-.45,0,0)));
+		
     }
     if(rightKeyUp)
     {
     	
-    	if(degree>0.2)
+    	if(iterR>0)
     	{
-    		mvMatrix = mult(rotate(-0.4,vec3(0,0,1)),mvMatrix);
-    		degree -= .4;
-    		mvMatrix = mult(mvMatrix, translate(vec3(-.04,0,0)));      //Easing back
-    		
+    		iterR--;
+    		mvMatrix = mult(rotate(-0.8,vec3(0,0,1)),mvMatrix);
+    		degree-=.8;
+    		//mvMatrix = mult(mvMatrix, translate(vec3(-.04,0,0)));      //Easing back
     	}
-    	if(limit>0.2)
+    	/*if(limit>0.2)
     	{
     		mvMatrix = mult(rotate(-0.8,vec3(0,1,0)),mvMatrix);
     		limit -= .8;
-    	}
+    	}*/
     	
     	
     }
     if(left)
     {
-    	if(degree>=-10)
+    	if(iterL>=-10)
     	{
-			degree -= .8;
-			mvMatrix = mult(rotate(-.8,vec3(0,0,1)),mvMatrix);	
+			iterL--;
+			mvMatrix = mult(rotate(-.8,vec3(0,0,1)),mvMatrix);
+			degree-=.8;	
 		}
-		if(limit>=-40)
+		/*if(limit>=-40)
 		{
-			mvMatrix = mult(rotate(-0.8,vec3(0,1,0)),mvMatrix);
+			
 			limit -= .8;
 		}
-		mvMatrix = mult(mvMatrix, translate(vec3(.05,0,0)));
+		mvMatrix = mult(mvMatrix, translate(vec3(.05,0,0)));*/
+		
+		mvMatrix = mult(mvMatrix, translate(vec3(.45,0,0)));
     }
     
     if(leftKeyUp)
     {
-    	if(degree<-0.2)
+    	if(iterL<0)
     	{
-    		mvMatrix = mult(rotate(0.4,vec3(0,0,1)),mvMatrix);
-    		degree += .4;
-    		mvMatrix = mult(mvMatrix, translate(vec3(.04,0,0)));   //Easing back
+    		mvMatrix = mult(rotate(0.8,vec3(0,0,1)),mvMatrix);
+    		iterL++;
+    		degree+=.8;
+    		//mvMatrix = mult(mvMatrix, translate(vec3(.04,0,0)));   //Easing back
     	}
-    	if(limit<-0.2)
+    	/*if(limit<-0.2)
     	{
     		mvMatrix = mult(rotate(0.8,vec3(0,1,0)),mvMatrix);
     		limit += .8;
-    	}
+    	}*/
     	
     } 
     //UP and DOWN
-    if(down)
+    if(up)
     {
-    	if(degreeY<=10)
+    	/*if(degreeY<=10)
     	{
 			degreeY += .5;
 			mvMatrix = mult(rotate(.5,vec3(1,0,0)),mvMatrix);	
 		}
-		mvMatrix = mult(mvMatrix, translate(vec3(0,.08,0)));
+		mvMatrix = mult(mvMatrix, translate(vec3(0,.08,0)));*/
+		
+		mvMatrix = mult(mvMatrix, translate(vec3(0,.45,0)));
     }
-    if(downKeyUp)
+    if(upKeyUp)
     {
-    	
+    	/*
     	if(degreeY>0.2)
     	{
     		mvMatrix = mult(rotate(-0.3,vec3(1,0,0)),mvMatrix);
     		degreeY -= .3;
     		mvMatrix = mult(mvMatrix, translate(vec3(0,.03,0)));
-    	}
+    	}*/
     }
-    if(up)
+    if(down)
     {
+    	/*
     	if(degreeY>=-10)
     	{
 			degreeY -= .5;
 			mvMatrix = mult(rotate(-.5,vec3(1,0,0)),mvMatrix);
 		}
-		mvMatrix = mult(mvMatrix, translate(vec3(0,-.08,0)));
+		mvMatrix = mult(mvMatrix, translate(vec3(0,-.08,0)));*/
+		
+		mvMatrix = mult(mvMatrix, translate(vec3(0,-.45,0)));
     }
     
-    if(upKeyUp)
+    if(downKeyUp)
     {
+    	/*
     	if(degreeY < -0.2)
     	{
     		mvMatrix = mult(rotate(0.3,vec3(1,0,0)),mvMatrix);
     		degreeY += .3;
     		mvMatrix = mult(mvMatrix, translate(vec3(0,-.02,0)));
-    	}
+    	}*/
     } 
     
-    if(right || left || down || up)   //Slow down scrolling when turning
+  /*  if(right || left || down || up)   //Slow down scrolling when turning
     {
-    	scrolling += .02;
-    	scrollEase = .02;
+    	//scrolling += .08;
+    	//scrollEase = .08;
     }
     else 
-    {
-    	if(scrollEase < .08)
+    {*/
+    	/*if(scrollEase < .24)
     	{	
-    		scrollEase += .008;
-    	}
+    		scrollEase += .24;
+    	}*/
     	scrolling += scrollEase;
-    }
+   // }
     
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
 	clearAABB();
@@ -247,7 +267,7 @@ var render = function(){
 	var ctm = mat4();
 	ctm = mult(ctm, mvMatrix);
 	ctm = mult(ctm, translate(vec3(0,0,scrolling)));
-	ctm = mult(ctm, scale(vec3(3,3,3)));
+	ctm = mult(ctm, scale(vec3(4,4,15)));
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
 	
 	
@@ -255,14 +275,18 @@ var render = function(){
 	
 	populateBuildings();
 	seed=1;
-	populateWorld();
+	
+	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
+	
+	
+	//populateWorld();
 	gl.uniform1f(changeColorLoc, 1.0);
 	
 	var ctm = mat4();
 	
 	//ctm = mult(ctm, mvMatrix);
-	ctm = mult(ctm, translate(vec3(0,-1,-3.8)));
-	ctm = mult(ctm, scale(vec3(1.2,1.2,1.2)));
+	ctm = mult(ctm, translate(vec3(0,-1,-14.8)));
+	ctm = mult(ctm, scale(vec3(1.3,1.3,1.3)));
 	ctm = mult(ctm, rotate(-degree,vec3(0,1,0)));
 	ctm = mult(ctm, rotate(-degree,vec3(0,0,1)));
 	ctm = mult(ctm, rotate(-degreeY*1.5,vec3(1,0,0)));

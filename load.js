@@ -362,44 +362,9 @@ function shuffleArray()
 	}
 	
 }
-
-/*
-function decideBuilding(num)
-{
-	var randomGeo, randomTex;
-	
-	switch(num) {
-    case 1:
-        randomGeo = buildingPointsArray1;
-		randomTex = buildingTexCoordsArray1;
-        break;
-    case 2:
-        randomGeo = buildingPointsArray2;
-        randomTex = buildingTexCoordsArray2;
-		break;
-	case 3:
-        randomGeo = buildingPointsArray3;
-		randomTex = buildingTexCoordsArray3;
-        break;
-	case 4:
-        randomGeo = buildingPointsArray4;
-		randomTex = buildingTexCoordsArray4;
-        break;
-	case 5:
-        randomGeo = buildingPointsArray5;
-		randomTex = buildingTexCoordsArray5;
-        break;
-	}
-	return [randomGeo,randomTex ];
-}
-*/
 function loadBuffers()
 {
-/*
-	normalBuffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, normalBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW );
-*/
+
 	//Geometry and Textutre Coordinates of buildings
 	shuffleArray();
 	
@@ -463,106 +428,6 @@ function populateBuildings()
 	
 	gl.bindTexture(gl.TEXTURE_2D, buildingTex5);
 	gl.drawArrays( gl.TRIANGLES, buildPerTex*4 , buildPerTex );
-	
-	
-	
-	
-	
-	
-	
-	/*
-	var randomTex;
-	
-	//building1
-	var r1 = Math.floor((random() * 5) + 1);
-	randomTex = decideTexture(r1);
-	
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer1 );
-	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer1 );
-	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
-	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 0, 18 );
-	gl.bindTexture(gl.TEXTURE_2D, roofTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 18, 6 );
-	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 24, 12 );
-	
-	//building2
-	r1 = Math.floor((random() * 5) + 1);
-	randomTex = decideTexture(r1);
-	
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer2 );
-	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer2 );
-	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
-	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 0, 18 );
-	gl.bindTexture(gl.TEXTURE_2D, roofTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 18, 6 );
-	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 24, 12 );
-	
-	//building3
-	r1 = Math.floor((random() * 5) + 1);
-	randomTex = decideTexture(r1);
-	
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer3 );
-	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer3 );
-	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
-	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 0, 18 );
-	gl.bindTexture(gl.TEXTURE_2D, roofTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 18, 6 );
-	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 24, 12 );
-	
-	//building4
-	r1 = Math.floor((random() * 5) + 1);
-	randomTex = decideTexture(r1);
-	
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer4 );
-	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer4 );
-	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
-	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 0, 18 );
-	gl.bindTexture(gl.TEXTURE_2D, roofTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 18, 6 );
-	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 24, 12 );
-	
-	//building5
-	r1 = Math.floor((random() * 5) + 1);
-	randomTex = decideTexture(r1);
-	
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer5 );
-	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer5 );
-	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
-	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 0, 18 );
-	gl.bindTexture(gl.TEXTURE_2D, roofTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 18, 6 );
-	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	
-	gl.drawArrays( gl.TRIANGLES, 24, 12 );
-	*/
 
 }
 
