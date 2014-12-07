@@ -50,7 +50,6 @@ window.onload = function init() {
 	gl.enableVertexAttribArray( vBuildTexCoord );
 	//gl.enableVertexAttribArray( ATTRIBUTE_normal );
 	
-	
 	samplerLoc = gl.getUniformLocation(program, "texture");
 	
 	UNIFORM_ambientProduct = gl.getUniformLocation(program, "ambientProduct");
@@ -137,15 +136,15 @@ var render = function(){
     	
     	if(degree>0.2)
     	{
-    		mvMatrix = mult(rotate(-0.8,vec3(0,0,1)),mvMatrix);
-    		degree -= .8;
-    		mvMatrix = mult(mvMatrix, translate(vec3(-.03,0,0)));
+    		mvMatrix = mult(rotate(-0.4,vec3(0,0,1)),mvMatrix);
+    		degree -= .4;
+    		mvMatrix = mult(mvMatrix, translate(vec3(-.04,0,0)));      //Easing back
     		
     	}
     	if(limit>0.2)
     	{
-    		mvMatrix = mult(rotate(-0.8,vec3(0,1,0)),mvMatrix);
-    		limit -= .8;
+    		mvMatrix = mult(rotate(-0.4,vec3(0,1,0)),mvMatrix);
+    		limit -= .4;
     	}
     	
     	
@@ -169,14 +168,14 @@ var render = function(){
     {
     	if(degree<-0.2)
     	{
-    		mvMatrix = mult(rotate(0.8,vec3(0,0,1)),mvMatrix);
-    		degree += .8;
-    		mvMatrix = mult(mvMatrix, translate(vec3(.03,0,0)));
+    		mvMatrix = mult(rotate(0.4,vec3(0,0,1)),mvMatrix);
+    		degree += .4;
+    		mvMatrix = mult(mvMatrix, translate(vec3(.04,0,0)));   //Easing back
     	}
     	if(limit<-0.2)
     	{
-    		mvMatrix = mult(rotate(0.8,vec3(0,1,0)),mvMatrix);
-    		limit += .8;
+    		mvMatrix = mult(rotate(0.4,vec3(0,1,0)),mvMatrix);
+    		limit += .4;
     	}
     	
     } 
@@ -185,10 +184,10 @@ var render = function(){
     {
     	if(degreeY<=10)
     	{
-			degreeY += .3;
-			mvMatrix = mult(rotate(.3,vec3(1,0,0)),mvMatrix);	
+			degreeY += .5;
+			mvMatrix = mult(rotate(.5,vec3(1,0,0)),mvMatrix);	
 		}
-		mvMatrix = mult(mvMatrix, translate(vec3(0,.02,0)));
+		mvMatrix = mult(mvMatrix, translate(vec3(0,.08,0)));
     }
     if(downKeyUp)
     {
@@ -204,11 +203,10 @@ var render = function(){
     {
     	if(degreeY>=-10)
     	{
-			degreeY -= .3;
-			mvMatrix = mult(rotate(-.3,vec3(1,0,0)),mvMatrix);
+			degreeY -= .5;
+			mvMatrix = mult(rotate(-.5,vec3(1,0,0)),mvMatrix);
 		}
-		mvMatrix = mult(mvMatrix, translate(vec3(0,-.03,0)));
-		
+		mvMatrix = mult(mvMatrix, translate(vec3(0,-.08,0)));
     }
     
     if(upKeyUp)
@@ -221,7 +219,7 @@ var render = function(){
     	}
     } 
     
-    if(right || left || down || up)
+    if(right || left || down || up)   //Slow down scrolling when turning
     {
     	scrolling += .02;
     }
@@ -261,7 +259,8 @@ var render = function(){
 	ctm = mult(ctm, translate(vec3(0,-1,-3.8)));
 	ctm = mult(ctm, scale(vec3(1.2,1.2,1.2)));
 	ctm = mult(ctm, rotate(-degree,vec3(0,1,0)));
-	ctm = mult(ctm, rotate(-degreeY,vec3(1,0,0)));
+	ctm = mult(ctm, rotate(-degree,vec3(0,0,1)));
+	ctm = mult(ctm, rotate(-degreeY*1.5,vec3(1,0,0)));
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
 
 	drawPlane();
