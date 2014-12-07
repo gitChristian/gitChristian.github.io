@@ -97,7 +97,13 @@ function createBuffers()
 	buildingGeoBuffer5= gl.createBuffer();
 	buildingTexBuffer5 = gl.createBuffer();
 	
+	geoRoofBuffer = gl.createBuffer();
+	roofTexCoordsBuffer = gl.createBuffer();
+	
 	worldBuffer= gl.createBuffer();
+	
+	mainGeoBuffer= gl.createBuffer();
+	mainTexCoordsBuffer= gl.createBuffer();
 	
 	//START TEXTURE COORDINATE BUFFERS
 	
@@ -266,14 +272,127 @@ function loadBuildings(depth)
 	var r4 = Math.floor((random() * 5) + 1);
 	var r5 = Math.floor((random() * 5) + 1);
 	
+	
 	//make 5 buildings
-	makeBuilding(buildingPointsArray1,buildingTexCoordsArray1, scale(1,r1,1), depth, 1 ); //1-3
-	makeBuilding(buildingPointsArray2,buildingTexCoordsArray2, scale(1,r2,1), depth, -2 ); // -2-0
-	makeBuilding(buildingPointsArray3,buildingTexCoordsArray3, scale(1,r3,1), depth, 4 ); //4-6
-	makeBuilding(buildingPointsArray4,buildingTexCoordsArray4, scale(1,r4,1), depth, -5 ); //-5- -2
-	makeBuilding(buildingPointsArray5,buildingTexCoordsArray5, scale(1,r5,1), depth, 7 ); //7-9
+	makeBuilding(buildingPointsArray1,buildingTexCoordsArray1, scale(1,r1,1), depth , 1 ); //1-3
+	makeBuilding(buildingPointsArray2,buildingTexCoordsArray2, scale(1,r2,1), depth , -2 ); // -2-0
+	makeBuilding(buildingPointsArray3,buildingTexCoordsArray3, scale(1,r3,1), depth , 4 ); //4-6
+	makeBuilding(buildingPointsArray4,buildingTexCoordsArray4, scale(1,r4,1), depth , -5 ); //-5- -2
+	makeBuilding(buildingPointsArray5,buildingTexCoordsArray5, scale(1,r5,1), depth , 7 ); //7-9
+	
+	//sorry for the inelegance
+	for(var i=0; i<36; i++)
+	{
+		mainGeoArray.push(buildingPointsArray1[i] );
+		mainTexCoordsArray.push( buildingTexCoordsArray1[i] );
+		
+		if( (i >= 18) && (i <=23) )
+		{
+			mainGeoRoofArray.push(buildingPointsArray1[i] );
+			mainRoofTexCoordsArray.push(buildingTexCoordsArray1[i] );
+		}
+	}
+	for(var i=0; i<36; i++)
+	{
+		mainGeoArray.push(buildingPointsArray2[i] );
+		mainTexCoordsArray.push( buildingTexCoordsArray2[i] );
+	
+		if( (i >= 18) && (i <=23) )
+		{
+			mainGeoRoofArray.push(buildingPointsArray2[i] );
+			mainRoofTexCoordsArray.push(buildingTexCoordsArray2[i] );
+		}
+	
+	}
+	for(var i=0; i<36; i++)
+	{
+		mainGeoArray.push(buildingPointsArray3[i] );
+		mainTexCoordsArray.push( buildingTexCoordsArray3[i] );
+		
+		if( (i >= 18) && (i <=23) )
+		{
+			mainGeoRoofArray.push(buildingPointsArray3[i] );
+			mainRoofTexCoordsArray.push(buildingTexCoordsArray3[i] );
+		}
+	}
+	for(var i=0; i<36; i++)
+	{
+		mainGeoArray.push(buildingPointsArray4[i] );
+		mainTexCoordsArray.push( buildingTexCoordsArray4[i] );
+		
+		if( (i >= 18) && (i <=23) )
+		{
+			mainGeoRoofArray.push(buildingPointsArray4[i] );
+			mainRoofTexCoordsArray.push(buildingTexCoordsArray4[i] );
+		}
+	}
+	for(var i=0; i<36; i++)
+	{
+		mainGeoArray.push(buildingPointsArray5[i] );
+		mainTexCoordsArray.push( buildingTexCoordsArray5[i] );
+		
+		if( (i >= 18) && (i <=23) )
+		{
+			mainGeoRoofArray.push(buildingPointsArray5[i] );
+			mainRoofTexCoordsArray.push(buildingTexCoordsArray5[i] );
+		}
+	}
+	
 }
 
+
+function shuffleArray()
+{
+	var remainingBuildings = buildIter * 5;
+	var tempArray1=[], tempArray2 = [];
+	
+	for(var i =0; i < buildIter*5; i++)
+	{
+		var chooseBuilding = Math.floor((random() * remainingBuildings) );
+		tempArray1 = mainGeoArray.splice(chooseBuilding*36,36);
+		tempArray2 = mainTexCoordsArray.splice(chooseBuilding*36,36);
+		for(var j=0; j<36;j++)
+		{
+			suffledGeoArray.push(tempArray1[j]);
+			suffledTexCoordsArray.push(tempArray2[j]);
+		}
+		tempArray1.splice(0,36);
+		tempArray2.splice(0,36);
+		remainingBuildings--;
+	}
+	
+}
+
+/*
+function decideBuilding(num)
+{
+	var randomGeo, randomTex;
+	
+	switch(num) {
+    case 1:
+        randomGeo = buildingPointsArray1;
+		randomTex = buildingTexCoordsArray1;
+        break;
+    case 2:
+        randomGeo = buildingPointsArray2;
+        randomTex = buildingTexCoordsArray2;
+		break;
+	case 3:
+        randomGeo = buildingPointsArray3;
+		randomTex = buildingTexCoordsArray3;
+        break;
+	case 4:
+        randomGeo = buildingPointsArray4;
+		randomTex = buildingTexCoordsArray4;
+        break;
+	case 5:
+        randomGeo = buildingPointsArray5;
+		randomTex = buildingTexCoordsArray5;
+        break;
+	}
+	return [randomGeo,randomTex ];
+}
+*/
 function loadBuffers()
 {
 /*
@@ -281,40 +400,20 @@ function loadBuffers()
     gl.bindBuffer( gl.ARRAY_BUFFER, normalBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW );
 */
-	//building1
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer1 );
-	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray1), gl.STATIC_DRAW );
+	//Geometry and Textutre Coordinates of buildings
+	shuffleArray();
 	
-    gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer1 );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray1), gl.STATIC_DRAW );
+	gl.bindBuffer( gl.ARRAY_BUFFER, mainGeoBuffer );
+	gl.bufferData( gl.ARRAY_BUFFER, flatten(suffledGeoArray), gl.STATIC_DRAW );
+    gl.bindBuffer( gl.ARRAY_BUFFER, mainTexCoordsBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(suffledTexCoordsArray), gl.STATIC_DRAW );
+	
+	//roof
+	gl.bindBuffer( gl.ARRAY_BUFFER, geoRoofBuffer );
+	gl.bufferData( gl.ARRAY_BUFFER, flatten(mainGeoRoofArray), gl.STATIC_DRAW );
+    gl.bindBuffer( gl.ARRAY_BUFFER, roofTexCoordsBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(mainRoofTexCoordsArray), gl.STATIC_DRAW );
 
-	//building2
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer2 );
-	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray2), gl.STATIC_DRAW );
-	
-    gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer2 );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray2), gl.STATIC_DRAW );
-	
-	//building3
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer3 );
-	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray3), gl.STATIC_DRAW );
-	
-    gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer3 );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray3), gl.STATIC_DRAW );
-	
-	//building4
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer4 );
-	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray4), gl.STATIC_DRAW );
-	
-    gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer4 );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray4), gl.STATIC_DRAW );
-	
-	//building5
-	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer5 );
-	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray5), gl.STATIC_DRAW );
-	
-    gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer5 );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray5), gl.STATIC_DRAW );
 	
 	//world
 	gl.bindBuffer( gl.ARRAY_BUFFER, worldBuffer );
@@ -328,38 +427,50 @@ function loadBuffers()
     gl.bindBuffer( gl.ARRAY_BUFFER, farTexBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(worldTexCoordsFar), gl.STATIC_DRAW );
 
-    
-
-    
 }
 
-
-function decideTexture(num)
-{
-	var randomTex;
-	
-	switch(num) {
-    case 1:
-        randomTex = buildingTex1
-        break;
-    case 2:
-        randomTex = buildingTex2
-        break;
-	case 3:
-        randomTex = buildingTex3
-        break;
-	case 4:
-        randomTex = buildingTex4
-        break;
-	case 5:
-        randomTex = buildingTex5
-        break;
-	}
-	return randomTex;
-}
 
 function populateBuildings()
 {
+	var numVert = buildIter*5*36;
+	var buildPerTex = buildIter*36;
+	
+	//draw roofs
+	gl.bindBuffer( gl.ARRAY_BUFFER, geoRoofBuffer );
+	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
+	gl.bindBuffer( gl.ARRAY_BUFFER, roofTexCoordsBuffer );
+	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
+	gl.bindTexture(gl.TEXTURE_2D, roofTex);
+	gl.drawArrays( gl.TRIANGLES, 0, 30*buildIter );
+	
+	
+	//draw buildings
+	gl.bindBuffer( gl.ARRAY_BUFFER, mainGeoBuffer );
+	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
+	gl.bindBuffer( gl.ARRAY_BUFFER, mainTexCoordsBuffer );
+	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
+	gl.bindTexture(gl.TEXTURE_2D, buildingTex1);
+	gl.drawArrays( gl.TRIANGLES, 0, buildPerTex );
+	
+	gl.bindTexture(gl.TEXTURE_2D, buildingTex2);
+	gl.drawArrays( gl.TRIANGLES, buildPerTex , buildPerTex );
+	
+	gl.bindTexture(gl.TEXTURE_2D, buildingTex3);
+	gl.drawArrays( gl.TRIANGLES, buildPerTex*2 , buildPerTex );
+	
+	gl.bindTexture(gl.TEXTURE_2D, buildingTex4);
+	gl.drawArrays( gl.TRIANGLES, buildPerTex*3 , buildPerTex );
+	
+	gl.bindTexture(gl.TEXTURE_2D, buildingTex5);
+	gl.drawArrays( gl.TRIANGLES, buildPerTex*4 , buildPerTex );
+	
+	
+	
+	
+	
+	
+	
+	/*
 	var randomTex;
 	
 	//building1
@@ -451,7 +562,7 @@ function populateBuildings()
 	gl.bindTexture(gl.TEXTURE_2D, randomTex);
 	
 	gl.drawArrays( gl.TRIANGLES, 24, 12 );
-	
+	*/
 
 }
 

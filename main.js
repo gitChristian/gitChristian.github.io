@@ -38,6 +38,11 @@ window.onload = function init() {
 	loadTextures();
 	makeCube();
 	makeWorld();
+	for(var i=0; i<buildIter; i++)
+	{
+		loadBuildings(i);
+	}
+	loadBuffers();
 
 	normalBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, normalBuffer );
@@ -236,7 +241,6 @@ var render = function(){
     }
     
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
-	
 	clearAABB();
 	updatePlaneAABB( translate(-mvMatrix[0][3], -mvMatrix[1][3], -mvMatrix[2][3]) );
 
@@ -248,18 +252,10 @@ var render = function(){
 	
 	
 	
-	for(var i = 0; i >-10; i--)
-	{
-		loadBuildings(i);
-		loadBuffers();
-		populateBuildings();
-	}	
+	
+	populateBuildings();
 	seed=1;
-	
-	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
-	
 	populateWorld();
-	
 	gl.uniform1f(changeColorLoc, 1.0);
 	
 	var ctm = mat4();

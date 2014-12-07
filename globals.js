@@ -2,14 +2,20 @@ var canvas;
 var gl;
 var program;
 
+//how many rows of buildings to be drawn
+var buildIter=100;
+
 //geometry arrays
 var buildingPointsArray1 = [], buildingPointsArray2 = [], buildingPointsArray3 = [], 
-	buildingPointsArray4 = [], buildingPointsArray5 = [];
+	buildingPointsArray4 = [], buildingPointsArray5 = [],
+	mainGeoArray = [], suffledGeoArray = [], mainGeoRoofArray = [];
 var cubeArray = [];
 var worldArray = [];
+
 //texture coordinate arrays
 var buildingTexCoordsArray1 = [], buildingTexCoordsArray2 = [],buildingTexCoordsArray3 = [],
-	buildingTexCoordsArray4 = [], buildingTexCoordsArray5 = [];
+	buildingTexCoordsArray4 = [], buildingTexCoordsArray5 = [],
+	mainTexCoordsArray = [], suffledTexCoordsArray = [], mainRoofTexCoordsArray = [];
 var cubeTexCoordsArray = [];
 var worldTexCoords=[], worldTexCoordsFar = [];
 
@@ -57,8 +63,8 @@ var buildingTex1,buildingTex2,buildingTex3,buildingTex4, buildingTex5;
 var roofTex, floorTex, skyTex, farTex;
 
 //buffers
-var buildingGeoBuffer1,buildingGeoBuffer2,buildingGeoBuffer3,buildingGeoBuffer4, buildingGeoBuffer5;
-var buildingTexBuffer1,buildingTexBuffer2,buildingTexBuffer3,buildingTexBuffer4, buildingTexBuffer5;
+var buildingGeoBuffer1,buildingGeoBuffer2,buildingGeoBuffer3,buildingGeoBuffer4, buildingGeoBuffer5, mainGeoBuffer, geoRoofBuffer;
+var buildingTexBuffer1,buildingTexBuffer2,buildingTexBuffer3,buildingTexBuffer4, buildingTexBuffer5, mainTexCoordsBuffer, roofTexCoordsBuffer;
 var worldBuffer, floorTexBuffer, farTexBuffer, planeBuffer, bullshitTexBuffer;
 
 //transformation matrix
@@ -191,6 +197,4 @@ function random() {
     var x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
 }
-
-var rotation = 20;
 
