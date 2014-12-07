@@ -75,7 +75,6 @@ function makeWorld()
 		worldArray.push( (multChris(scale(160,40,100), cubeArray[i])) ); 
 		worldTexCoords.push( ( vec2(cubeTexCoordsArray[i][0] *10, cubeTexCoordsArray[i][1] * 10) ) );
 		worldTexCoordsFar.push( ( vec2(cubeTexCoordsArray[i][0] *1, cubeTexCoordsArray[i][1] * .5) ) );
-		
 	}
 }
 
@@ -84,14 +83,19 @@ function createBuffers()
 	
 	//START GEOMETRY BUFFERS
 	buildingGeoBuffer1= gl.createBuffer();
+	buildingTexBuffer1 = gl.createBuffer();
 	
 	buildingGeoBuffer2= gl.createBuffer();
+	buildingTexBuffer2 = gl.createBuffer();
 	
 	buildingGeoBuffer3= gl.createBuffer();
+	buildingTexBuffer3 = gl.createBuffer();
 	
 	buildingGeoBuffer4= gl.createBuffer();
+	buildingTexBuffer4 = gl.createBuffer();
 	
 	buildingGeoBuffer5= gl.createBuffer();
+	buildingTexBuffer5 = gl.createBuffer();
 	
 	worldBuffer= gl.createBuffer();
 	
@@ -266,7 +270,7 @@ function loadBuffers()
 	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer1 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray1), gl.STATIC_DRAW );
-	buildingTexBuffer1 = gl.createBuffer();
+	
     gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer1 );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray1), gl.STATIC_DRAW );
 
@@ -274,7 +278,7 @@ function loadBuffers()
 	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer2 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray2), gl.STATIC_DRAW );
-	buildingTexBuffer2 = gl.createBuffer();
+	
     gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer2 );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray2), gl.STATIC_DRAW );
 	
@@ -282,7 +286,7 @@ function loadBuffers()
 	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer3 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray3), gl.STATIC_DRAW );
-	buildingTexBuffer3 = gl.createBuffer();
+	
     gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer3 );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray3), gl.STATIC_DRAW );
 	
@@ -290,7 +294,7 @@ function loadBuffers()
 	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer4 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray4), gl.STATIC_DRAW );
-	buildingTexBuffer4 = gl.createBuffer();
+	
     gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer4 );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray4), gl.STATIC_DRAW );
 	
@@ -298,27 +302,23 @@ function loadBuffers()
 	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer5 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray5), gl.STATIC_DRAW );
-	buildingTexBuffer5 = gl.createBuffer();
+	
     gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer5 );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray5), gl.STATIC_DRAW );
 	
 	//world
-	
 	gl.bindBuffer( gl.ARRAY_BUFFER, worldBuffer );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(worldArray), gl.STATIC_DRAW );
 	
 	//floor
-	
     gl.bindBuffer( gl.ARRAY_BUFFER, floorTexBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(worldTexCoords), gl.STATIC_DRAW );
     
     //far wall
-    
     gl.bindBuffer( gl.ARRAY_BUFFER, farTexBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(worldTexCoordsFar), gl.STATIC_DRAW );
 
     //plane buffer
-   	
     gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(Indices), gl.STATIC_DRAW );
     
@@ -362,13 +362,13 @@ function populateBuildings()
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer1 );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
 	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 0, 18 );
 	gl.bindTexture(gl.TEXTURE_2D, roofTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );
 	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 24, 12 );
 	
 	//building2
@@ -380,13 +380,13 @@ function populateBuildings()
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer2 );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
 	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 0, 18 );
 	gl.bindTexture(gl.TEXTURE_2D, roofTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );
 	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 24, 12 );
 	
 	//building3
@@ -398,13 +398,13 @@ function populateBuildings()
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer3 );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
 	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 0, 18 );
 	gl.bindTexture(gl.TEXTURE_2D, roofTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );
 	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 24, 12 );
 	
 	//building4
@@ -416,13 +416,13 @@ function populateBuildings()
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer4 );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
 	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 0, 18 );
 	gl.bindTexture(gl.TEXTURE_2D, roofTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );
 	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 24, 12 );
 	
 	//building5
@@ -434,13 +434,13 @@ function populateBuildings()
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingTexBuffer5 );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
 	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 0, 18 );
 	gl.bindTexture(gl.TEXTURE_2D, roofTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );
 	gl.bindTexture(gl.TEXTURE_2D, randomTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 24, 12 );
 	
 
@@ -450,17 +450,17 @@ function populateWorld()
 {
 	gl.bindBuffer( gl.ARRAY_BUFFER, worldBuffer );
 	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
+	
 	gl.bindBuffer( gl.ARRAY_BUFFER, floorTexBuffer );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
+	
 	gl.bindTexture(gl.TEXTURE_2D, floorTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 12, 6 );
 	
 	gl.bindTexture(gl.TEXTURE_2D, skyTex);
-	gl.uniform1i(samplerLoc, 0);
+	
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );	
-	
-	
 
 	gl.drawArrays( gl.TRIANGLES, 24, 6 );
 	

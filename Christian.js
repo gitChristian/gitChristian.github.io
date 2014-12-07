@@ -72,7 +72,7 @@ window.onload = function init() {
 				mvMatrix = mult( translate(0,0,-0.1), mvMatrix);
 				break;
 			case 'i': //away
-				mvMatrix = mult( translate(0,0,0.1), mvMatrix);
+				mvMatrix = mult( translate(0,0,0.2), mvMatrix);
 				break;
 			case 'w': //up
 				mvMatrix = mult( translate(0,-0.1,0), mvMatrix);
@@ -100,7 +100,7 @@ var render = function(){
 	updatePlaneAABB( translate(-mvMatrix[0][3], -mvMatrix[1][3], -mvMatrix[2][3]) );
 	
 	
-	for(var i =0; i >-10; i--)
+	for(var i = 0; i >-20; i--)
 	{
 		loadBuildings(i);
 		loadBuffers();
@@ -109,8 +109,7 @@ var render = function(){
 	seed=1;
 	populateWorld();
 	
-	gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
-	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
+
 	gl.uniform1f(changeColorLoc, 1.0);
 	
 	var ctm = mat4();
@@ -121,6 +120,9 @@ var render = function(){
 	
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
 	
+	
+	gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
+	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
 	gl.drawArrays( gl.TRIANGLES, 0,  36);
 	
 	gl.uniform1f(changeColorLoc, 0.0);
