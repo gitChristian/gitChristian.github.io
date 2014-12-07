@@ -1,6 +1,5 @@
 var mvMatrix;
 
-
 window.onload = function init() {
 
 
@@ -47,6 +46,8 @@ window.onload = function init() {
 	mvMatrixLoc = gl.getUniformLocation( program, "mvMatrix" );
     pMatrixLoc = gl.getUniformLocation( program, "pMatrix" );
 	changeColorLoc = gl.getUniformLocation( program, "colorChange" );
+	
+	
 	gl.uniform4fv(UNIFORM_ambientProduct,  flatten(ambientProduct));
     gl.uniform4fv(UNIFORM_diffuseProduct,  flatten(diffuseProduct));
     gl.uniform4fv(UNIFORM_specularProduct, flatten(specularProduct));
@@ -94,11 +95,11 @@ window.onload = function init() {
 }
 
 var render = function(){
+
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
 	clearAABB();
 	updatePlaneAABB( translate(-mvMatrix[0][3], -mvMatrix[1][3], -mvMatrix[2][3]) );
-	
 	
 	for(var i = 0; i >-20; i--)
 	{
@@ -119,13 +120,10 @@ var render = function(){
 	
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
 
-
-	gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
-	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
-	gl.drawArrays( gl.TRIANGLES, 0,  36);
+	drawPlane();
 	
 	gl.uniform1f(changeColorLoc, 0.0);
-	
+
 	document.getElementById('collision').innerHTML = detectCollision();
 	
 	window.requestAnimFrame( render );

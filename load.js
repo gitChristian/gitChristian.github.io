@@ -106,6 +106,21 @@ function createBuffers()
 	farTexBuffer = gl.createBuffer();
 	
 	planeBuffer = gl.createBuffer();
+	
+	var bullshitPoints = [];
+	for(var i = 0; i<87; i++)
+	{
+		bullshitPoints.push(vec2(0,0));
+	}
+	
+	bullshitTexBuffer = gl.createBuffer();
+	gl.bindBuffer( gl.ARRAY_BUFFER, bullshitTexBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(bullshitPoints), gl.STATIC_DRAW );
+	
+	//plane buffer
+    gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(Indices), gl.STATIC_DRAW );
+
 }
 
 
@@ -267,7 +282,6 @@ function loadBuffers()
     gl.bufferData( gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW );
 */
 	//building1
-	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer1 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray1), gl.STATIC_DRAW );
 	
@@ -275,7 +289,6 @@ function loadBuffers()
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray1), gl.STATIC_DRAW );
 
 	//building2
-	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer2 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray2), gl.STATIC_DRAW );
 	
@@ -283,7 +296,6 @@ function loadBuffers()
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray2), gl.STATIC_DRAW );
 	
 	//building3
-	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer3 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray3), gl.STATIC_DRAW );
 	
@@ -291,7 +303,6 @@ function loadBuffers()
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray3), gl.STATIC_DRAW );
 	
 	//building4
-	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer4 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray4), gl.STATIC_DRAW );
 	
@@ -299,7 +310,6 @@ function loadBuffers()
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray4), gl.STATIC_DRAW );
 	
 	//building5
-	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer5 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray5), gl.STATIC_DRAW );
 	
@@ -318,9 +328,8 @@ function loadBuffers()
     gl.bindBuffer( gl.ARRAY_BUFFER, farTexBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(worldTexCoordsFar), gl.STATIC_DRAW );
 
-    //plane buffer
-    gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(Indices), gl.STATIC_DRAW );
+    
+
     
 }
 
@@ -469,10 +478,8 @@ function drawPlane()
 {
 	gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
 	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
-	gl.uniform1f(changeColorLoc, 1.0);
-	gl.drawArrays( gl.LINE_LOOP, 0, 87 );
-	gl.uniform1f(changeColorLoc, 0.0);
-	
-	
+	gl.bindBuffer( gl.ARRAY_BUFFER, bullshitTexBuffer );
+	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
+	gl.drawArrays( gl.TRIANGLES, 0,  87);
 }
 

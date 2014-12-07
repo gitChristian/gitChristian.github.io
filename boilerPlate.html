@@ -36,7 +36,10 @@ void main()
     // fColor.a  = 1.0;
 
     gl_Position = pMatrix * mvMatrix * vPosition;
+    
+
 	fBuildTexCoord = vBuildTexCoord;
+	
     
 }
 </script>
@@ -46,7 +49,6 @@ void main()
 precision mediump float;
 
 varying vec2 fBuildTexCoord;
-
 uniform sampler2D texture;
 
 uniform float colorChange;
@@ -56,7 +58,7 @@ void main()
    if(colorChange==0.0)
     	gl_FragColor = texture2D( texture, fBuildTexCoord );
     else if(colorChange==1.0) 
-    	gl_FragColor = vec4(1,0,1,1);
+    	gl_FragColor = vec4(1,1,1,1);
 }
 </script>
 
