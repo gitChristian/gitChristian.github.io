@@ -14,13 +14,18 @@ var leftrotated = false;
 var rightrotated = false;
 var degree = 0;
 var degreeY = 0;
+
 var scrolling = 0;
 var limit = 0;
 
 var iterL = 0;
 var iterR = 0;
+var iterU = 0;
+var iterD = 0;
 
-var scrollEase = 0.64;
+var scrollEase = 1.24;
+
+var turnSpeed = .4;
 
 window.onload = function init() {
 
@@ -41,7 +46,7 @@ window.onload = function init() {
 	loadTextures();
 	makeCube();
 	makeWorld();
-	for(var i=0; i>-buildIter*2; i-=2)
+	for(var i=-20; i>-buildIter*3 - 20; i-=3)
 	{
 		loadBuildings(i);
 	}
@@ -137,15 +142,7 @@ var render = function(){
 			degree+=.8;
 		}
 		
-		/*
-		if(limit<=40)
-		{
-			mvMatrix = mult(rotate(.8,vec3(0,1,0)),mvMatrix);
-			limit += .8;
-		}
-		mvMatrix = mult(mvMatrix, translate(vec3(-.05,0,0)));*/
-		
-		mvMatrix = mult(mvMatrix, translate(vec3(-.45,0,0)));
+		mvMatrix = mult(mvMatrix, translate(vec3(-turnSpeed,0,0)));
 		
     }
     if(rightKeyUp)
@@ -156,15 +153,8 @@ var render = function(){
     		iterR--;
     		mvMatrix = mult(rotate(-0.8,vec3(0,0,1)),mvMatrix);
     		degree-=.8;
-    		//mvMatrix = mult(mvMatrix, translate(vec3(-.04,0,0)));      //Easing back
     	}
-    	/*if(limit>0.2)
-    	{
-    		mvMatrix = mult(rotate(-0.8,vec3(0,1,0)),mvMatrix);
-    		limit -= .8;
-    	}*/
-    	
-    	
+    	  	
     }
     if(left)
     {
@@ -174,14 +164,7 @@ var render = function(){
 			mvMatrix = mult(rotate(-.8,vec3(0,0,1)),mvMatrix);
 			degree-=.8;	
 		}
-		/*if(limit>=-40)
-		{
-			
-			limit -= .8;
-		}
-		mvMatrix = mult(mvMatrix, translate(vec3(.05,0,0)));*/
-		
-		mvMatrix = mult(mvMatrix, translate(vec3(.45,0,0)));
+		mvMatrix = mult(mvMatrix, translate(vec3(turnSpeed,0,0)));
     }
     
     if(leftKeyUp)
@@ -191,59 +174,47 @@ var render = function(){
     		mvMatrix = mult(rotate(0.8,vec3(0,0,1)),mvMatrix);
     		iterL++;
     		degree+=.8;
-    		//mvMatrix = mult(mvMatrix, translate(vec3(.04,0,0)));   //Easing back
     	}
-    	/*if(limit<-0.2)
-    	{
-    		mvMatrix = mult(rotate(0.8,vec3(0,1,0)),mvMatrix);
-    		limit += .8;
-    	}*/
-    	
     } 
     //UP and DOWN
     if(up)
     {
-    	/*if(degreeY<=10)
+    	if(iterU<=10)
     	{
-			degreeY += .5;
-			mvMatrix = mult(rotate(.5,vec3(1,0,0)),mvMatrix);	
+			iterU++;
+			degreeY+=.8;
 		}
-		mvMatrix = mult(mvMatrix, translate(vec3(0,.08,0)));*/
 		
-		mvMatrix = mult(mvMatrix, translate(vec3(0,.45,0)));
+		mvMatrix = mult(mvMatrix, translate(vec3(0,turnSpeed,0)));
     }
     if(upKeyUp)
     {
-    	/*
-    	if(degreeY>0.2)
+    	
+    	if(iterU>0)
     	{
-    		mvMatrix = mult(rotate(-0.3,vec3(1,0,0)),mvMatrix);
-    		degreeY -= .3;
-    		mvMatrix = mult(mvMatrix, translate(vec3(0,.03,0)));
-    	}*/
+    		iterU--
+    		degreeY-=.8;
+    	}
     }
     if(down)
     {
-    	/*
-    	if(degreeY>=-10)
+    	
+    	if(iterD>=-10)
     	{
-			degreeY -= .5;
-			mvMatrix = mult(rotate(-.5,vec3(1,0,0)),mvMatrix);
+    		iterD--;
+    		degreeY-=.8;
 		}
-		mvMatrix = mult(mvMatrix, translate(vec3(0,-.08,0)));*/
-		
-		mvMatrix = mult(mvMatrix, translate(vec3(0,-.45,0)));
+		mvMatrix = mult(mvMatrix, translate(vec3(0,-turnSpeed,0)));
     }
     
     if(downKeyUp)
     {
-    	/*
-    	if(degreeY < -0.2)
+    	
+    	if(iterD < 0)
     	{
-    		mvMatrix = mult(rotate(0.3,vec3(1,0,0)),mvMatrix);
-    		degreeY += .3;
-    		mvMatrix = mult(mvMatrix, translate(vec3(0,-.02,0)));
-    	}*/
+    		degreeY+=.8;
+    		iterD++;
+    	}
     } 
     
   /*  if(right || left || down || up)   //Slow down scrolling when turning
@@ -285,7 +256,7 @@ var render = function(){
 	var ctm = mat4();
 	
 	//ctm = mult(ctm, mvMatrix);
-	ctm = mult(ctm, translate(vec3(0,-1,-14.8)));
+	ctm = mult(ctm, translate(vec3(0,-1,-15.8)));
 	ctm = mult(ctm, scale(vec3(1.3,1.3,1.3)));
 	ctm = mult(ctm, rotate(-degree,vec3(0,1,0)));
 	ctm = mult(ctm, rotate(-degree,vec3(0,0,1)));
