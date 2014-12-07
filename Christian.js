@@ -120,9 +120,10 @@ var render = function(){
     	if(degree<=10)
     	{
 			degree += .8;
-			mvMatrix = mult(rotate(.8,vec3(0,0,1)),mvMatrix);
-			
+			mvMatrix = mult(rotate(.8,vec3(0,0,1)),mvMatrix);	
 		}
+		mvMatrix = mult(rotate(.8,vec3(0,1,0)),mvMatrix);
+		scrolling-=.04;
 		mvMatrix = mult(mvMatrix, translate(vec3(-.05,0,0)));
     }
     if(rightKeyUp)
@@ -134,6 +135,7 @@ var render = function(){
     		
     		degree -= .8;
     	}
+    	mvMatrix = mult(rotate(-0.8,vec3(0,1,0)),mvMatrix);
     }
     if(left)
     {
@@ -142,7 +144,10 @@ var render = function(){
 			degree -= .8;
 			mvMatrix = mult(rotate(-.8,vec3(0,0,1)),mvMatrix);
 			
+			
 		}
+		mvMatrix = mult(rotate(-0.8,vec3(0,1,0)),mvMatrix);
+		scrolling-=.04;
 		mvMatrix = mult(mvMatrix, translate(vec3(.05,0,0)));
     }
     
@@ -151,8 +156,10 @@ var render = function(){
     	if(degree<0)
     	{
     		mvMatrix = mult(rotate(0.8,vec3(0,0,1)),mvMatrix);
+    		
     		degree += .8;
     	}
+    	mvMatrix = mult(rotate(0.8,vec3(0,1,0)),mvMatrix);
     } 
     //UP and DOWN
     if(down)
