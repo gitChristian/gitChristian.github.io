@@ -143,8 +143,8 @@ var render = function(){
     	}
     	if(limit>0.2)
     	{
-    		mvMatrix = mult(rotate(-0.4,vec3(0,1,0)),mvMatrix);
-    		limit -= .4;
+    		mvMatrix = mult(rotate(-0.8,vec3(0,1,0)),mvMatrix);
+    		limit -= .8;
     	}
     	
     	
@@ -174,8 +174,8 @@ var render = function(){
     	}
     	if(limit<-0.2)
     	{
-    		mvMatrix = mult(rotate(0.4,vec3(0,1,0)),mvMatrix);
-    		limit += .4;
+    		mvMatrix = mult(rotate(0.8,vec3(0,1,0)),mvMatrix);
+    		limit += .8;
     	}
     	
     } 
@@ -291,26 +291,38 @@ document.addEventListener('keydown', function(event) {
         downKeyUp = false;
     }
 });
+function key(e) {
+	return e?e.which:event.keyCode;
+}
 
 document.addEventListener('keyup', function(event) {
-	if(left)
-	{	
-		leftKeyUp = true;
-		left = false;
+	
+	switch(key()){
+		case 37:
+		{
+			leftKeyUp = true;
+			left = false;
+			break;
+		}
+		case 39:
+		{
+			rightKeyUp = true;
+			right = false;
+			break;
+		}
+		case 38:
+		{
+			upKeyUp = true;
+			up = false;
+			break;
+		}
+		case 40:
+		{
+			downKeyUp = true;
+			down = false;
+			break;
+		}
 	}
-	if(right)
-	{
-		rightKeyUp = true;
-		right = false;
-	}
-	if(up)
-	{	
-		upKeyUp = true;
-		up = false;
-	}
-	if(down)
-	{
-		downKeyUp = true;
-		down = false;
-	}
+
 });
+
