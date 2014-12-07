@@ -17,6 +17,8 @@ var degreeY = 0;
 var scrolling = 0;
 var limit = 0;
 
+var scrollEase = 0.08;
+
 window.onload = function init() {
 
 
@@ -124,7 +126,7 @@ var render = function(){
 			degree += .8;
 			mvMatrix = mult(rotate(.8,vec3(0,0,1)),mvMatrix);	
 		}
-		if(limit<=30)
+		if(limit<=40)
 		{
 			mvMatrix = mult(rotate(.8,vec3(0,1,0)),mvMatrix);
 			limit += .8;
@@ -156,7 +158,7 @@ var render = function(){
 			degree -= .8;
 			mvMatrix = mult(rotate(-.8,vec3(0,0,1)),mvMatrix);	
 		}
-		if(limit>=-30)
+		if(limit>=-40)
 		{
 			mvMatrix = mult(rotate(-0.8,vec3(0,1,0)),mvMatrix);
 			limit -= .8;
@@ -222,9 +224,16 @@ var render = function(){
     if(right || left || down || up)   //Slow down scrolling when turning
     {
     	scrolling += .02;
+    	scrollEase = .02;
     }
-    else
-    	scrolling += .08;
+    else 
+    {
+    	if(scrollEase < .08)
+    	{	
+    		scrollEase += .008;
+    	}
+    	scrolling += scrollEase;
+    }
     
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
 	
