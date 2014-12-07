@@ -1,4 +1,20 @@
-var mvMatrix;
+var mvMatrix = mat4();
+
+var right = false;
+var left = false;
+var	up = false;
+var down = false;
+
+var rightKeyUp = true;
+var leftKeyUp = true;
+var upKeyUp = true;
+var downKeyUp = true;
+
+var leftrotated = false;
+var rightrotated = false;
+var degree = 0;
+var degreeY = 0;
+var scrolling = 0;
 
 window.onload = function init() {
 
@@ -60,8 +76,9 @@ window.onload = function init() {
 	//mvMatrix = mult( rotate(50, [5,0,0]  ), mvMatrix);
 	
 	mvMatrix = mult( translate(-3,0,-12), mvMatrix);
+	
+	var pMatrix = perspective( 50, canvas.width/canvas.height, 1, 500);
 	mvMatrix = mult( rotate(0, [0,0,1]  ), mvMatrix);
-	var pMatrix = perspective( 70, canvas.width/canvas.height, 1, 500);
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
     gl.uniformMatrix4fv(pMatrixLoc, false, flatten(pMatrix));
     
@@ -97,17 +114,110 @@ window.onload = function init() {
 var render = function(){
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    if(right)
+    {
+    	if(degree<=10)
+    	{
+			degree += .8;
+			mvMatrix = mult(rotate(.8,vec3(0,0,1)),mvMatrix);
+			
+		}
+		mvMatrix = mult(mvMatrix, translate(vec3(-.05,0,0)));
+    }
+    if(rightKeyUp)
+    {
+    	
+    	if(degree>0)
+    	{
+    		mvMatrix = mult(rotate(-0.8,vec3(0,0,1)),mvMatrix);
+    		
+    		degree -= .8;
+    	}
+    }
+    if(left)
+    {
+    	if(degree>=-10)
+    	{
+			degree -= .8;
+			mvMatrix = mult(rotate(-.8,vec3(0,0,1)),mvMatrix);
+			
+		}
+		mvMatrix = mult(mvMatrix, translate(vec3(.05,0,0)));
+    }
+    
+    if(leftKeyUp)
+    {
+    	if(degree<0)
+    	{
+    		mvMatrix = mult(rotate(0.8,vec3(0,0,1)),mvMatrix);
+    		degree += .8;
+    	}
+    } 
+    //UP and DOWN
+    if(down)
+    {
+    	if(degreeY<=10)
+    	{
+			degreeY += .3;
+			mvMatrix = mult(rotate(.3,vec3(1,0,0)),mvMatrix);
+			
+		}
+		mvMatrix = mult(mvMatrix, translate(vec3(0,.05,0)));
+    }
+    if(downKeyUp)
+    {
+    	
+    	if(degreeY>0)
+    	{
+    		mvMatrix = mult(rotate(-0.8,vec3(1,0,0)),mvMatrix);
+    		
+    		degreeY -= .8;
+    	}
+    }
+    if(up)
+    {
+    	if(degreeY>=-10)
+    	{
+			degreeY -= .3;
+			mvMatrix = mult(rotate(-.3,vec3(1,0,0)),mvMatrix);
+			
+		}
+		mvMatrix = mult(mvMatrix, translate(vec3(0,-.05,0)));
+    }
+    
+    if(upKeyUp)
+    {
+    	if(degreeY<0)
+    	{
+    		mvMatrix = mult(rotate(0.8,vec3(1,0,0)),mvMatrix);
+    		degreeY += .8;
+    	}
+    } 
+    
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
+	
 	clearAABB();
 	updatePlaneAABB( translate(-mvMatrix[0][3], -mvMatrix[1][3], -mvMatrix[2][3]) );
+	scrolling += .08;
+	var ctm = mat4();
+	ctm = mult(ctm, mvMatrix);
+	ctm = mult(ctm, translate(vec3(0,0,scrolling)));
+	ctm = mult(ctm, scale(vec3(3,3,3)));
+	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
 	
-	for(var i = 0; i >-20; i--)
+	
+	
+	for(var i = 0; i >-10; i--)
 	{
 		loadBuildings(i);
 		loadBuffers();
 		populateBuildings();
 	}	
 	seed=1;
+	
+	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
+	
 	populateWorld();
 	
 	gl.uniform1f(changeColorLoc, 1.0);
@@ -116,7 +226,7 @@ var render = function(){
 	
 	//ctm = mult(ctm, mvMatrix);
 	ctm = mult(ctm, translate(vec3(0,-1,-3.8)));
-	ctm = mult(ctm, scale(vec3(1.5,1.5,1.5)));
+	ctm = mult(ctm, scale(vec3(1.2,1.2,1.2)));
 	
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
 
@@ -126,5 +236,48 @@ var render = function(){
 
 	document.getElementById('collision').innerHTML = detectCollision();
 	
+	
 	window.requestAnimFrame( render );
 }
+
+document.addEventListener('keydown', function(event) {
+    if (event.keyCode == 37){
+        left = true;
+        leftKeyUp = false;
+    }
+    if (event.keyCode == 39){
+        right = true;
+        rightKeyUp = false;
+    }
+    if (event.keyCode == 38){
+        up = true;
+        upKeyUp = false;
+    }
+    if (event.keyCode == 40){
+        down = true;
+        downKeyUp = false;
+    }
+});
+
+document.addEventListener('keyup', function(event) {
+	if(left)
+	{	
+		leftKeyUp = true;
+		left = false;
+	}
+	if(right)
+	{
+		rightKeyUp = true;
+		right = false;
+	}
+	if(up)
+	{	
+		upKeyUp = true;
+		up = false;
+	}
+	if(down)
+	{
+		downKeyUp = true;
+		down = false;
+	}
+});

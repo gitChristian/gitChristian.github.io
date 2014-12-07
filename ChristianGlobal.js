@@ -192,3 +192,5 @@ function random() {
     return x - Math.floor(x);
 }
 
+var rotation = 20;
+
