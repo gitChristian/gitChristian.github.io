@@ -20,6 +20,10 @@ window.onload = function init() {
 	makeCube();
 	makeWorld();
 
+	normalBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, normalBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW );
+
 	//get locations in shader and enable variables
 	vPosition = gl.getAttribLocation( program, "vPosition" );
 	vBuildTexCoord = gl.getAttribLocation( program, "vBuildTexCoord" );
@@ -27,7 +31,9 @@ window.onload = function init() {
 	
 	gl.enableVertexAttribArray( vPosition );
 	gl.enableVertexAttribArray( vBuildTexCoord );
-	gl.enableVertexAttribArray( ATTRIBUTE_normal );
+	//gl.enableVertexAttribArray( ATTRIBUTE_normal );
+	
+	
 	samplerLoc = gl.getUniformLocation(program, "texture");
 	
 	UNIFORM_ambientProduct = gl.getUniformLocation(program, "ambientProduct");
@@ -50,9 +56,9 @@ window.onload = function init() {
 	
 	 mvMatrix =mat4();
 	//mvMatrix = mult( rotate(50, [5,0,0]  ), mvMatrix);
-	//mvMatrix = mult( rotate(10, [0,1,0]  ), mvMatrix);
+	
 	mvMatrix = mult( translate(-3,0,-12), mvMatrix);
-
+	mvMatrix = mult( rotate(0, [0,0,1]  ), mvMatrix);
 	var pMatrix = perspective( 70, canvas.width/canvas.height, 1, 500);
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
     gl.uniformMatrix4fv(pMatrixLoc, false, flatten(pMatrix));

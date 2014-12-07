@@ -231,10 +231,6 @@ function loadBuildings(depth)
 
 function loadBuffers()
 {
-	normalBuffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, normalBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW );
-
 	//building1
 	buildingGeoBuffer1= gl.createBuffer();
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer1 );
@@ -294,10 +290,7 @@ function loadBuffers()
     //plane buffer
    	planeBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(Indices), gl.STATIC_DRAW );
-    
-    
-    
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(Indices), gl.STATIC_DRAW ); 
 	
 }
 
