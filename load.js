@@ -231,6 +231,10 @@ function loadBuildings(depth)
 
 function loadBuffers()
 {
+	normalBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, normalBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW );
+
 	//building1
 	buildingGeoBuffer1= gl.createBuffer();
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer1 );
@@ -291,6 +295,8 @@ function loadBuffers()
    	planeBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(Indices), gl.STATIC_DRAW );
+    
+    
     
 	
 }
@@ -430,6 +436,10 @@ function populateWorld()
 	gl.bindTexture(gl.TEXTURE_2D, skyTex);
 	gl.uniform1i(samplerLoc, 0);
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );	
+	
+	
+
+	gl.drawArrays( gl.TRIANGLES, 24, 6 );
 	
 }
 function drawPlane()

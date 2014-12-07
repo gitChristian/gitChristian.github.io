@@ -165,6 +165,7 @@ window.onload = function init()
 
     UNIFORM_mvMatrix = gl.getUniformLocation(program, "mvMatrix");
     UNIFORM_pMatrix = gl.getUniformLocation(program, "pMatrix");
+    
     UNIFORM_ambientProduct = gl.getUniformLocation(program, "ambientProduct");
     UNIFORM_diffuseProduct = gl.getUniformLocation(program, "diffuseProduct");
     UNIFORM_specularProduct = gl.getUniformLocation(program, "specularProduct");

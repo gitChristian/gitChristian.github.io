@@ -23,15 +23,28 @@ window.onload = function init() {
 	//get locations in shader and enable variables
 	vPosition = gl.getAttribLocation( program, "vPosition" );
 	vBuildTexCoord = gl.getAttribLocation( program, "vBuildTexCoord" );
+	ATTRIBUTE_normal = gl.getAttribLocation( program, "vNormal" );
+	
 	gl.enableVertexAttribArray( vPosition );
 	gl.enableVertexAttribArray( vBuildTexCoord );
+	gl.enableVertexAttribArray( ATTRIBUTE_normal );
 	samplerLoc = gl.getUniformLocation(program, "texture");
 	
+	UNIFORM_ambientProduct = gl.getUniformLocation(program, "ambientProduct");
+    UNIFORM_diffuseProduct = gl.getUniformLocation(program, "diffuseProduct");
+    UNIFORM_specularProduct = gl.getUniformLocation(program, "specularProduct");
+    UNIFORM_lightPosition = gl.getUniformLocation(program, "lightPosition");
+    UNIFORM_shininess = gl.getUniformLocation(program, "shininess");
 
 	//group code
 	mvMatrixLoc = gl.getUniformLocation( program, "mvMatrix" );
     pMatrixLoc = gl.getUniformLocation( program, "pMatrix" );
 	changeColorLoc = gl.getUniformLocation( program, "colorChange" );
+	gl.uniform4fv(UNIFORM_ambientProduct,  flatten(ambientProduct));
+    gl.uniform4fv(UNIFORM_diffuseProduct,  flatten(diffuseProduct));
+    gl.uniform4fv(UNIFORM_specularProduct, flatten(specularProduct));
+    gl.uniform3fv(UNIFORM_lightPosition,  flatten(lightPosition));
+    gl.uniform1f(UNIFORM_shininess,  shininess);
 	
 	gl.uniform1f(changeColorLoc, 0.0);
 	
@@ -96,7 +109,7 @@ var render = function(){
 	var ctm = mat4();
 	
 	//ctm = mult(ctm, mvMatrix);
-	ctm = mult(ctm, translate(vec3(0,-1,-3.5)));
+	ctm = mult(ctm, translate(vec3(0,-1,-3.8)));
 	ctm = mult(ctm, scale(vec3(2,2,2)));
 	
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));

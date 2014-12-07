@@ -19,6 +19,39 @@ var vBuildTexCoord;
 var samplerLoc, changeColorLoc;
 var mvMatrixLoc, pMatrixLoc;
 
+//Color variables
+var UNIFORM_specularProduct;
+var UNIFORM_lightPosition;
+var UNIFORM_shininess;
+var ATTRIBUTE_position;
+var ATTRIBUTE_normal;
+var normalBuffer;
+
+
+var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0);
+var materialAmbient = vec4(0.0, 0.0, 1.0, 1.0);
+var ambientProduct = mult(lightAmbient, materialAmbient);
+
+var lightDiffuse = vec4(0.6, 0.6, 0.6, 1.0);
+var materialDiffuse = vec4(0.0, 0.6, 0.6, 1.0);
+var diffuseProduct = mult(lightDiffuse, materialDiffuse);
+
+var lightSpecular = vec4(0.4, 0.4, 0.4, 1.0);
+var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+var specularProduct = mult(lightSpecular, materialSpecular);
+
+var shininess = 50;
+var lightPosition = vec3(-9.0, 7.0, -2.0);
+
+var normals = [
+   vec3(0,0,1),vec3(0,0,1),vec3(0,0,1),vec3(0,0,1),vec3(0,0,1),vec3(0,0,1),
+   vec3(1,0,0),vec3(1,0,0),vec3(1,0,0),vec3(1,0,0),vec3(1,0,0),vec3(1,0,0),
+   vec3(0,-1,0),vec3(0,-1,0),vec3(0,-1,0),vec3(0,-1,0),vec3(0,-1,0),vec3(0,-1,0),
+   vec3(0,1,0),vec3(0,1,0),vec3(0,1,0),vec3(0,1,0),vec3(0,1,0),vec3(0,1,0),
+   vec3(0,0,-1),vec3(0,0,-1),vec3(0,0,-1),vec3(0,0,-1),vec3(0,0,-1),vec3(0,0,-1),
+   vec3(-1,0,0), vec3(-1,0,0), vec3(-1,0,0), vec3(-1,0,0), vec3(-1,0,0), vec3(-1,0,0)  
+];
+
 //texture objects
 var buildingTex1,buildingTex2,buildingTex3,buildingTex4, buildingTex5;
 var roofTex, floorTex, skyTex, farTex;
@@ -43,6 +76,8 @@ var cubeVerticies = [
     vec4( 0.5,  0.5, -0.5, 1.0 ),
     vec4( 0.5, -0.5, -0.5, 1.0 )
 ];
+
+
 
 var buildingTexCoord = [
     vec2(0, 0),
