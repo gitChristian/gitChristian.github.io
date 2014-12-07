@@ -166,3 +166,33 @@ function singleCheck(i) {
 	return true;
 }
 
+
+// A function to take an array of points as input and generate corresponding normals for flat shading.
+// Returned result is an array containing normals in vec3, and normal vectors are already normalized. 
+function generateNormals (points) {
+	var result = [];
+	var centroid = vec3();
+	var u = vec3();
+	var v = vec3();
+	var w = vec3();
+	var normal = vec3();
+	for (var i = 0; i < points.length; ++i)
+	{
+		centroid = add( centroid, vec3(points[i][0], points[i][1], points[i][2]) );
+	}
+	centroid = scale1( 1/points.length, centroid );
+	for (var j = 0; j < points.length; j += 3)
+	{
+		u = subtract( vec3(points[j+1][0], points[j+1][1], points[j+1][2]), vec3(points[j][0], points[j][1], points[j][2]) );
+		v = subtract( vec3(points[j+2][0], points[j+2][1], points[j+2][2]), vec3(points[j][0], points[j][1], points[j][2]) );
+		w = subtract( vec3(points[j][0], points[j][1], points[j][2]), centroid );
+		normal = cross( u, v );
+		normal = normalize( normal, 0 );
+		if ( dot(normal, w) < 0 )
+			normal = negate(normal);
+		result.push(normal);
+		result.push(normal);
+		result.push(normal);
+	}
+	return result;
+}
