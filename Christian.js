@@ -109,18 +109,17 @@ var render = function(){
 	seed=1;
 	populateWorld();
 	
-
 	gl.uniform1f(changeColorLoc, 1.0);
 	
 	var ctm = mat4();
 	
 	//ctm = mult(ctm, mvMatrix);
 	ctm = mult(ctm, translate(vec3(0,-1,-3.8)));
-	ctm = mult(ctm, scale(vec3(2,2,2)));
+	ctm = mult(ctm, scale(vec3(1.5,1.5,1.5)));
 	
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
-	
-	
+
+
 	gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
 	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
 	gl.drawArrays( gl.TRIANGLES, 0,  36);
