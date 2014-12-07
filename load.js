@@ -79,6 +79,32 @@ function makeWorld()
 	}
 }
 
+function createBuffers()
+{
+	
+	//START GEOMETRY BUFFERS
+	buildingGeoBuffer1= gl.createBuffer();
+	
+	buildingGeoBuffer2= gl.createBuffer();
+	
+	buildingGeoBuffer3= gl.createBuffer();
+	
+	buildingGeoBuffer4= gl.createBuffer();
+	
+	buildingGeoBuffer5= gl.createBuffer();
+	
+	worldBuffer= gl.createBuffer();
+	
+	//START TEXTURE COORDINATE BUFFERS
+	
+	floorTexBuffer = gl.createBuffer();
+	
+	farTexBuffer = gl.createBuffer();
+	
+	planeBuffer = gl.createBuffer();
+}
+
+
 
 function loadTextures()
 { 	//make textures
@@ -231,8 +257,13 @@ function loadBuildings(depth)
 
 function loadBuffers()
 {
+/*
+	normalBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, normalBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW );
+*/
 	//building1
-	buildingGeoBuffer1= gl.createBuffer();
+	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer1 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray1), gl.STATIC_DRAW );
 	buildingTexBuffer1 = gl.createBuffer();
@@ -240,7 +271,7 @@ function loadBuffers()
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray1), gl.STATIC_DRAW );
 
 	//building2
-	buildingGeoBuffer2= gl.createBuffer();
+	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer2 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray2), gl.STATIC_DRAW );
 	buildingTexBuffer2 = gl.createBuffer();
@@ -248,7 +279,7 @@ function loadBuffers()
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray2), gl.STATIC_DRAW );
 	
 	//building3
-	buildingGeoBuffer3= gl.createBuffer();
+	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer3 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray3), gl.STATIC_DRAW );
 	buildingTexBuffer3 = gl.createBuffer();
@@ -256,7 +287,7 @@ function loadBuffers()
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray3), gl.STATIC_DRAW );
 	
 	//building4
-	buildingGeoBuffer4= gl.createBuffer();
+	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer4 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray4), gl.STATIC_DRAW );
 	buildingTexBuffer4 = gl.createBuffer();
@@ -264,7 +295,7 @@ function loadBuffers()
     gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingTexCoordsArray4), gl.STATIC_DRAW );
 	
 	//building5
-	buildingGeoBuffer5= gl.createBuffer();
+	
 	gl.bindBuffer( gl.ARRAY_BUFFER, buildingGeoBuffer5 );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(buildingPointsArray5), gl.STATIC_DRAW );
 	buildingTexBuffer5 = gl.createBuffer();
@@ -273,25 +304,24 @@ function loadBuffers()
 	
 	//world
 	
-	worldBuffer= gl.createBuffer();
 	gl.bindBuffer( gl.ARRAY_BUFFER, worldBuffer );
 	gl.bufferData( gl.ARRAY_BUFFER, flatten(worldArray), gl.STATIC_DRAW );
 	
 	//floor
-	floorTexBuffer = gl.createBuffer();
+	
     gl.bindBuffer( gl.ARRAY_BUFFER, floorTexBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(worldTexCoords), gl.STATIC_DRAW );
     
     //far wall
-    farTexBuffer = gl.createBuffer();
+    
     gl.bindBuffer( gl.ARRAY_BUFFER, farTexBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(worldTexCoordsFar), gl.STATIC_DRAW );
 
     //plane buffer
-   	planeBuffer = gl.createBuffer();
+   	
     gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(Indices), gl.STATIC_DRAW ); 
-	
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(Indices), gl.STATIC_DRAW );
+    
 }
 
 
