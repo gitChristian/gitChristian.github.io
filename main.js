@@ -247,9 +247,8 @@ var render = function(){
     	}
     } 
     
-    	if(!detectCollision())
+    	if(!collided)
     	{
-    
 			scrolling += scrollEase;
 			scrollIter++;
     	}
@@ -264,9 +263,6 @@ var render = function(){
 	ctm = mult(ctm, translate(vec3(0,0,scrolling)));
 	ctm = mult(ctm, scale(vec3(4,4,15)));
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
-	
-	
-	
 	
 	populateBuildings();
 	seed=1;
@@ -306,7 +302,15 @@ var render = function(){
 
 	drawPlane();
 	
+
+	
 	updatePlaneAABB( ctm, Indices );	// Update bounding box for the plane
+	
+		if(detectCollision())
+		{
+			collided = 1;
+		}
+
 	
 	gl.uniform1f(changeColorLoc, 0.0);
 
