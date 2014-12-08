@@ -73,7 +73,7 @@ void main()
 <body>
 <audio id="song" autoplay loop>
  <!-- <source src="WE_SINK.ogg" type="audio/ogg"> -->
-  <source src="Sounds/WE_SINK.mp3" type="audio/mpeg">
+  <!--<source src="Sounds/WE_SINK.mp3" type="audio/mpeg">-->
   Your browser does not support the audio tag.
 </audio>
 
@@ -89,13 +89,14 @@ void main()
 	<div class='menu-wrap'>
 		<div class='inner-wrap'>
 			<div class='row'>
-				<div style='background:red' class='col'><h2>You Died!</h2></div><div id='restart' style='background:green' class='col'><h2>Restart Game</h2></div>
+				<div style='background:#FBABAB' class='col'><div class='text'><h1>Score</h1><h2 class='score-text'></h2></div></div><div id='restart' style='background:green' class='col'><div class='text'><h1>Restart</h1></div></div>
 			</div>
 			<div class='row'>
-				<div style = 'background:blue;' class='col'><h2>Something Else</h2></div><div style = 'background:purple' class='col'><h2>Credits</h2></div>
+				<div style = 'background:blue;' class='col'><div class='text'><h1>Something Else</h1></div></div><div style = 'background:purple' class='col'><div class='text'><h1>Credits<br><br></h1><h2>Joey Gomez-Benito, <br>Chris Nersesyan, <br>Zhen Liu, <br>Yifan</h2></div></div>
 			</div>
 		</div>
 	</div>
+	<div class="count">0</div>
 </div>
 
 <script>
@@ -107,9 +108,10 @@ void main()
 	$('#restart').click(function(){
 		restart = true;
 		$('.menu-wrap').hide();
+		$('.count').show();
 	});
 </script>
 
-<div class="count">0</div>
+
 </body>
 </html>

@@ -4,6 +4,8 @@ var program;
 var collided = 0;
 var restart = 0;
 
+var score = 0;
+
 //how many rows of buildings to be drawn
 var buildIter=500;
 

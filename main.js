@@ -275,7 +275,10 @@ var render = function(){
 			var sound = document.getElementById("crash");
 			sound.play();
 			$(".menu-wrap").show();
+			$(".count").hide();
 			flag = 1;
+			score = $(".count").text();
+			$(".score-text").text(score);
 		}
 		
 		if(restart)
@@ -286,6 +289,8 @@ var render = function(){
 			collided = 0;
 			restart = 0;
 			flag = 0;
+			score = 0;
+			scrollIter = 0;
 		}
 		
 	}

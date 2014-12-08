@@ -77,6 +77,7 @@ canvas
 	height:50%;
 	margin: 0;
 	padding: 0;
+	background:black;
 
 }
 .col
@@ -90,14 +91,34 @@ canvas
 	cursor:pointer;
 
 }
-h2
+.col:hover
+{
+	opacity:.8;
+}
+
+h2, h1
 {
 	color:white;
 	text-align:center;
-	font-size: 20px;
-	margin-top: 48%;
   	font-weight: 600;
   	font-smoothing: antialiased;
   	-webkit-font-smoothing: antialiased;
   	+border-radius(4px);
+  	margin:0;
+  	padding:0;
+  	
+}
+
+h2
+{
+	font-size:19px;
+}
+h1
+{
+	font-size:25px;
+}
+.text
+{
+	padding:15px;
+	float:left;
 }
