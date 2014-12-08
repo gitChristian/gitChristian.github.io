@@ -145,10 +145,10 @@ var render = function(){
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	$display = $('.count');
-	if(collided)
+	if(!collided)
 		$display.text(3*scrollIter);
 	//controls
-    if(right)
+    if(right && !collided)
     {
     	if(iterR<=10)
     	{
@@ -174,7 +174,7 @@ var render = function(){
     	}
     	  	
     }
-    if(left)
+    if(left && !collided)
     {
     	if(iterL>=-10)
     	{
@@ -199,7 +199,7 @@ var render = function(){
     	}
     } 
     //UP and DOWN
-    if(up)
+    if(up && !collided)
     {
     	if(iterU<=10)
     	{
@@ -222,7 +222,7 @@ var render = function(){
     		degreeY-=.8;
     	}
     }
-    if(down)
+    if(down && !collided)
     {
     	
     	if(iterD>=-10)
@@ -249,10 +249,12 @@ var render = function(){
     
     	if(!detectCollision())
     	{
-    		collided = 1;
+    
 			scrolling += scrollEase;
 			scrollIter++;
     	}
+    	else
+    		collided = 1;
     
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
 
