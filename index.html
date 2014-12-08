@@ -102,7 +102,7 @@ void main()
 				</div>
 			</div>
 			<div class='row'>
-				<div style = 'background:#661400; float:left;' class='col'>
+				<div id = 'sound-div' style = 'background:#661400; float:left;' class='col'>
 					<div class='text'>
 						<h1 style='margin-bottom:20px;'>Sound</h1>
 						<div id='sound-btn' class='play'></div>
@@ -132,7 +132,7 @@ void main()
 	});
 	
 	
-	$('#sound-btn').click(function(){
+	$('#sound-div').click(function(){
    		$('#sound-btn').toggleClass('play');
    		if(!$('#sound-btn').hasClass('play'))
 		{
