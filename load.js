@@ -33,7 +33,6 @@ function makeBuilding(storeArray, texArray, scaleMatrix, depth, count)
 		storeArray.push( multChris( translate(randX, 0, depth ), temp ) );
 		texArray.push( vec2(cubeTexCoordsArray[i][0], cubeTexCoordsArray[i][1] * yFactor) );
 	}
-	addAABB( mult( translate(randX, 0, depth), scaleMatrix ) );
 }
 
 function quad(a, b, c, d) {

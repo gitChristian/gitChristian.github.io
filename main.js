@@ -131,14 +131,13 @@ window.onload = function init() {
 		}
 	};
 	
-	createPlaneAABB(cubeArray);
     render();
 }
 
 var render = function(){
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
+	clearAABB();
 
 	//controls
     if(right)
@@ -255,8 +254,7 @@ var render = function(){
    // }
     
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
-	clearAABB();
-	updatePlaneAABB( translate(-mvMatrix[0][3], -mvMatrix[1][3], -mvMatrix[2][3]) );
+
 
 	var ctm = mat4();
 	ctm = mult(ctm, mvMatrix);
@@ -269,6 +267,18 @@ var render = function(){
 	
 	populateBuildings();
 	seed=1;
+	
+	// Create bounding box for each building
+	var tempBuffer = [];
+	for (var i = 0; i < suffledGeoArray.length; i += 36)
+	{
+		tempBuffer = [];
+		for (var j = 0; j < 36; ++j)
+		{
+			tempBuffer.push( vec4(suffledGeoArray[i+j][0], suffledGeoArray[i+j][1], suffledGeoArray[i+j][2], suffledGeoArray[i+j][3]) );
+		}
+		addAABB( ctm, tempBuffer );
+	}
 	
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
 	
@@ -288,10 +298,12 @@ var render = function(){
 
 	drawPlane();
 	
+	updatePlaneAABB( ctm, Indices );	// Update bounding box for the plane
+	
 	gl.uniform1f(changeColorLoc, 0.0);
 
 	document.getElementById('collision').innerHTML = detectCollision();
-	
+	//document.getElementById('collision').innerHTML = suffledGeoArray.length;
 	
 	window.requestAnimFrame( render );
 }
