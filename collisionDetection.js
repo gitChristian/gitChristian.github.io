@@ -70,6 +70,7 @@ function updatePlaneAABB(ctm, buffer) {
 
 // Return true if collision detected
 function detectCollision() {
+	var tempBuffer;
 	for (var i = 0; i < AABBmaxArray.length; ++i)
 	{
 		if (singleCheck(i))
@@ -78,8 +79,10 @@ function detectCollision() {
 			// The plane is potentially colliding with the building #i, I need to retrieve all vertices 
 			// of this building and plane, then check intersection between all triangles on plane with 
 			// all triangles on the building.
-			
-			if (intersect_primitive_primitive(planeCheckBuffer, buildingCheckBuffer))
+			tempBuffer = [];
+			for ( var j = i * 36; j < (i+1) * 36; ++j)
+				tempBuffer.push( vec4(buildingCheckBuffer[j][0], buildingCheckBuffer[j][1], buildingCheckBuffer[j][2], buildingCheckBuffer[j][3]) );
+			if (intersect_primitive_primitive(planeCheckBuffer, tempBuffer))
 				return true;
 		}
 	}
