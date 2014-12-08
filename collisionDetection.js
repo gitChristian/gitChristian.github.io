@@ -11,11 +11,16 @@ var AABBminArray = [];
 var AABBmaxArray = [];
 var planeAABBmin = vec4();
 var planeAABBmax = vec4();
+var buildingCheckBuffer = [];
+var planeCheckBuffer = [];
 
 // Given a transformation matrix (transformation from object coordinate to world coordinate), create
 // the corresponding Axis-Aligned Bounding Box and push it to the array.
 function addAABB(ctm, buffer) {
-	var temp = createAABB( applyTransformation( ctm, buffer ) );
+	var points = applyTransformation( ctm, buffer );
+	for (var i = 0; i < points.length; ++i)
+		buildingCheckBuffer.push( vec4(points[i][0], points[i][1], points[i][2], points[i][3]) );
+	var temp = createAABB( points );
 	var AABBmin = vec4( temp[0][0], temp[0][1], temp[0][2], temp[0][3] );
 	var AABBmax = vec4( temp[1][0], temp[1][1], temp[1][2], temp[1][3] );
 	AABBminArray.push( AABBmin );
@@ -27,6 +32,8 @@ function addAABB(ctm, buffer) {
 function clearAABB() {
 	AABBminArray = [];
 	AABBmaxArray = [];
+	buildingCheckBuffer = [];
+	planeCheckBuffer = [];
 }
 
 // Take the vertices buffer of the plane as a input, create an Axis-Aligned Bounding Box for the plane
@@ -53,7 +60,10 @@ function createAABB(buffer) {
 }
 
 function updatePlaneAABB(ctm, buffer) {
-	var temp = createAABB( applyTransformation( ctm, buffer ) );
+	var points = applyTransformation( ctm, buffer );
+	for (var i = 0; i < points.length; ++i)
+		planeCheckBuffer.push( vec4(points[i][0], points[i][1], points[i][2], points[i][3]) );
+	var temp = createAABB( points );
 	planeAABBmin = vec4( temp[0][0], temp[0][1], temp[0][2], temp[0][3] );
 	planeAABBmax = vec4( temp[1][0], temp[1][1], temp[1][2], temp[1][3] );
 }
@@ -68,10 +78,9 @@ function detectCollision() {
 			// The plane is potentially colliding with the building #i, I need to retrieve all vertices 
 			// of this building and plane, then check intersection between all triangles on plane with 
 			// all triangles on the building.
-			/*
-			if (intersect_primitive_primitive(planeVertices, building#iVertices))
-			*/
-			return true;
+			
+			if (intersect_primitive_primitive(planeCheckBuffer, buildingCheckBuffer))
+				return true;
 		}
 	}
 	return false;
@@ -112,7 +121,8 @@ function intersect_segment_triangle (P0, P1, V0, V1, V2) {
 	var SMALL_NUM = 0.00000001
 	var u = subtract(V1, V0);
 	var v = subtract(V2, V0);
-	var n = cross(u, v);
+	var n3 = cross( vec3(u[0], u[1], u[2]), vec3(v[0], v[1], v[2]));
+	var n = vec4(n3[0], n3[1], n3[2], 0);
 	var dir = subtract(P1, P0);
 	var w0 = subtract(P0, V0);
 	var a = -dot(n, w0);
