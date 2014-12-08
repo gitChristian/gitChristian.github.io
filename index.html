@@ -70,28 +70,46 @@ void main()
 <script type="text/javascript" src="collisionDetection.js"></script>
 <link rel="stylesheet" type="text/css" href="styles.css">
 
-<script>
-
-</script>
-
 <body>
 <audio id="song" autoplay loop>
  <!-- <source src="WE_SINK.ogg" type="audio/ogg"> -->
   <source src="Sounds/WE_SINK.mp3" type="audio/mpeg">
   Your browser does not support the audio tag.
 </audio>
-<script>
-	var song = document.getElementById("song");
-	song.volume = .2;
-</script>
+
 
 <audio id='crash'>
 	<source src="Sounds/explosion.mp3" type="audio/mpeg">
 </audio>
 
-<canvas id="gl-canvas" width="1406" height="668">
-Oops ... your browser doesn't support the HTML5 canvas element
-</canvas>
+<div class='canvas-wrap'>
+	<canvas id="gl-canvas" width="1406" height="668">
+	Oops ... your browser doesn't support the HTML5 canvas element
+	</canvas>
+	<div class='menu-wrap'>
+		<div class='inner-wrap'>
+			<div class='row'>
+				<div style='background:red' class='col'><h2>You Died!</h2></div><div id='restart' style='background:green' class='col'><h2>Restart Game</h2></div>
+			</div>
+			<div class='row'>
+				<div style = 'background:blue;' class='col'><h2>Something Else</h2></div><div style = 'background:purple' class='col'><h2>Credits</h2></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var song = document.getElementById("song");
+	song.volume = .2;
+	$(document).ready(function(){
+		$('.menu-wrap').hide();
+	});
+	$('#restart').click(function(){
+		restart = true;
+		$('.menu-wrap').hide();
+	});
+</script>
+
 <div class="count">0</div>
 </body>
 </html>

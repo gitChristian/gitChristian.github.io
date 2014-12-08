@@ -2,8 +2,10 @@ var canvas;
 var gl;
 var program;
 var collided = 0;
+var restart = 0;
+
 //how many rows of buildings to be drawn
-var buildIter=300;
+var buildIter=500;
 
 //geometry arrays
 var buildingPointsArray1 = [], buildingPointsArray2 = [], buildingPointsArray3 = [], 

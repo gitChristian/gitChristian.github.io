@@ -123,7 +123,7 @@ window.onload = function init() {
 	
 	mvMatrix = mult( translate(-3,0,-50), mvMatrix);
 	
-	var pMatrix = perspective( 7, canvas.width/canvas.height, 1, 1500);
+	var pMatrix = perspective( 7, canvas.width/canvas.height, 1, 1400);
 	mvMatrix = mult( rotate(0, [0,0,1]  ), mvMatrix);
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
     gl.uniformMatrix4fv(pMatrixLoc, false, flatten(pMatrix));
@@ -274,7 +274,18 @@ var render = function(){
 		{
 			var sound = document.getElementById("crash");
 			sound.play();
+			$(".menu-wrap").show();
 			flag = 1;
+		}
+		
+		if(restart)
+		{
+			scrolling-=scrolling;
+			mvMatrix = mult(mvMatrix, translate(vec3(posX,0,0)));
+			posX=0;
+			collided = 0;
+			restart = 0;
+			flag = 0;
 		}
 		
 	}
@@ -312,8 +323,8 @@ var render = function(){
 	
 	var ctm = mat4();
 	ctm = mult(ctm, mvMatrix);
-	ctm = mult(ctm, translate(vec3(0,18,-15*buildIter + scrolling)));
-	ctm = mult(ctm, scale(vec3(4,1.5,100)));
+	ctm = mult(ctm, translate(vec3(0,18,-21*buildIter + scrolling)));
+	ctm = mult(ctm, scale(vec3(4,1.5,buildIter/2)));
 	
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
 	
