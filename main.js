@@ -25,7 +25,7 @@ var iterR = 0;
 var iterU = 0;
 var iterD = 0;
 
-var scrollEase = 2.34;
+var scrollEase = 1.34;
 
 var turnSpeed = .4;
 
@@ -144,7 +144,9 @@ window.onload = function init() {
 var render = function(){
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
+	$display = $('.count');
+	if(collided)
+		$display.text(3*scrollIter);
 	//controls
     if(right)
     {
@@ -245,20 +247,12 @@ var render = function(){
     	}
     } 
     
-  /*  if(right || left || down || up)   //Slow down scrolling when turning
-    {
-    	//scrolling += .08;
-    	//scrollEase = .08;
-    }
-    else 
-    {*/
-    	/*if(scrollEase < .24)
-    	{	
-    		scrollEase += .24;
-    	}*/
-    	scrolling += scrollEase;
-    	scrollIter++;
-   // }
+    	if(!detectCollision())
+    	{
+    		collided = 1;
+			scrolling += scrollEase;
+			scrollIter++;
+    	}
     
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
 

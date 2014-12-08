@@ -38,3 +38,10 @@ canvas
   &.glow{
     +text-shadow(0 0 4px #ffffff);
     }
+    
+#col
+{
+	position:absolute;
+	bottom:20px;
+	left:0px;
+}
