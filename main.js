@@ -214,7 +214,7 @@ var render = function(){
     	}
     } 
     //UP and DOWN
-    if(up && !collided)
+    if(down && !collided)
     {
     	if(iterU<=10)
     	{
@@ -228,7 +228,7 @@ var render = function(){
 			
 		}
     }
-    if(upKeyUp)
+    if(downKeyUp)
     {
     	
     	if(iterU>0)
@@ -237,7 +237,7 @@ var render = function(){
     		degreeY-=.8;
     	}
     }
-    if(down && !collided)
+    if(up && !collided)
     {
     	
     	if(iterD>=-10)
@@ -252,7 +252,7 @@ var render = function(){
 		}
     }
     
-    if(downKeyUp)
+    if(upKeyUp)
     {
     	
     	if(iterD < 0)
