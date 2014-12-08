@@ -59,6 +59,11 @@ window.onload = function init() {
 	{
 		loadBuildings(i);
 	}
+	// Make a copy of mainGeoArray used for collision detection
+	for (var i = 0; i < mainGeoArray.length; ++i)
+		mainGeoArray_copy.push( vec4(mainGeoArray[i][0], mainGeoArray[i][1], mainGeoArray[i][2], mainGeoArray[i][3]) );
+	
+	
 	loadBuffers();
 
 	normalBuffer = gl.createBuffer();
@@ -270,14 +275,19 @@ var render = function(){
 	
 	// Create bounding box for each building
 	var tempBuffer = [];
-	for (var i = 0; i < suffledGeoArray.length; i += 36)
+	var testPoint;
+	for (var i = 0; i < mainGeoArray_copy.length; i += 36)
 	{
-		tempBuffer = [];
-		for (var j = 0; j < 36; ++j)
+		testPoint = vec4( mainGeoArray_copy[i][0], mainGeoArray_copy[i][1], mainGeoArray_copy[i][2], mainGeoArray_copy[i][3] );
+		if ( Math.abs( planeAABBmin[2] - matMultVec( ctm, testPoint )[2] ) < 24 )
 		{
-			tempBuffer.push( vec4(suffledGeoArray[i+j][0], suffledGeoArray[i+j][1], suffledGeoArray[i+j][2], suffledGeoArray[i+j][3]) );
+			tempBuffer = [];
+			for (var j = 0; j < 36; ++j)
+			{
+				tempBuffer.push( vec4(mainGeoArray_copy[i+j][0], mainGeoArray_copy[i+j][1], mainGeoArray_copy[i+j][2], mainGeoArray_copy[i+j][3]) );
+			}
+			addAABB( ctm, tempBuffer );
 		}
-		addAABB( ctm, tempBuffer );
 	}
 	
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));

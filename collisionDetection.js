@@ -27,8 +27,6 @@ function addAABB(ctm, buffer) {
 function clearAABB() {
 	AABBminArray = [];
 	AABBmaxArray = [];
-	planeAABBmin = [];
-	planeAABBmax = [];
 }
 
 // Take the vertices buffer of the plane as a input, create an Axis-Aligned Bounding Box for the plane
