@@ -73,7 +73,7 @@ void main()
 <body>
 <audio id="song" autoplay loop>
  <!-- <source src="WE_SINK.ogg" type="audio/ogg"> -->
-  <!--<source src="Sounds/WE_SINK.mp3" type="audio/mpeg">-->
+  <source src="Sounds/WE_SINK.mp3" type="audio/mpeg">
   Your browser does not support the audio tag.
 </audio>
 
@@ -89,10 +89,30 @@ void main()
 	<div class='menu-wrap'>
 		<div class='inner-wrap'>
 			<div class='row'>
-				<div style='background:#FBABAB' class='col'><div class='text'><h1>Score</h1><h2 class='score-text'></h2></div></div><div id='restart' style='background:green' class='col'><div class='text'><h1>Restart</h1></div></div>
+				<div style='background:#003300; float:left;' class='col'>	
+					<div class='text'>
+						<h1>Score</h1>
+						<h2 class='score-text' style='font-size:65px'></h2>
+					</div>
+				</div><div id='restart' style='background:#336699; float:right;' class='col'>
+					<div class='text'>
+						<h1 style='margin-bottom:20px;'>Restart</h1>
+						<img src = 'images/play.png'>
+					</div>
+				</div>
 			</div>
 			<div class='row'>
-				<div style = 'background:blue;' class='col'><div class='text'><h1>Something Else</h1></div></div><div style = 'background:purple' class='col'><div class='text'><h1>Credits<br><br></h1><h2>Joey Gomez-Benito, <br>Chris Nersesyan, <br>Zhen Liu, <br>Yifan</h2></div></div>
+				<div style = 'background:#661400; float:left;' class='col'>
+					<div class='text'>
+						<h1 style='margin-bottom:20px;'>Sound</h1>
+						<div id='sound-btn' class='play'></div>
+					</div>
+			</div><div style = 'background:#666699; float:right' class='col'>
+				<div class='text'>
+					<h1 style='margin-bottom:15px;'>Credits<br></h1>
+					<h2>Joey Gomez-Benito, <br>Chris Nersesyan, <br>Zhen Liu, <br>Yifan</h2>
+				</div>
+			</div>
 			</div>
 		</div>
 	</div>
@@ -110,6 +130,22 @@ void main()
 		$('.menu-wrap').hide();
 		$('.count').show();
 	});
+	
+	
+	$('#sound-btn').click(function(){
+   		$('#sound-btn').toggleClass('play');
+   		if(!$('#sound-btn').hasClass('play'))
+		{
+			song.pause();
+		}
+		else
+		{
+			song.play();
+		//alert("here");
+		}
+   		
+	});
+
 </script>
 
 

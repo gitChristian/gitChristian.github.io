@@ -111,14 +111,45 @@ h2, h1
 
 h2
 {
-	font-size:19px;
+	font-size:18px;
 }
 h1
 {
-	font-size:25px;
+	font-size:35px;
 }
 .text
 {
-	padding:15px;
-	float:left;
+	padding:20px;
+}
+.text-inner
+{
+	clear:both;
+	position:absolute;
+	top:0;
+	right:0;
+	left:0;
+	bottom:0;
+	
+}
+.play
+{
+	background-image:url('images/sound_on.png') !important;
+	width:60px;
+	height:60px;
+	background-size:cover;
+	margin:auto;
+}
+#sound-btn
+{
+	background-image:url('images/sound_off.png');
+	width:60px;
+	height:60px;
+	background-size:cover;
+	margin:auto;
+}
+img
+{
+	width:60px;
+	height:auto;
+	margin:auto;
 }
