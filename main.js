@@ -311,7 +311,8 @@ var render = function(){
 	ctm = mult(ctm, rotate(-degreeY*1.5,vec3(1,0,0)));
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
 
-	drawPlane();
+	if(!collided)
+	 drawPlane();
 	
 
 	
