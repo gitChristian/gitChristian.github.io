@@ -72,7 +72,7 @@ function makeWorld()
 	for(var i=0; i <36; i++)
 	{
 		worldArray.push( (multChris(scale(160,40,100), cubeArray[i])) ); 
-		worldTexCoords.push( ( vec2(cubeTexCoordsArray[i][0] *10, cubeTexCoordsArray[i][1] * 10) ) );
+		worldTexCoords.push( ( vec2(cubeTexCoordsArray[i][0] *80, cubeTexCoordsArray[i][1] * 20) ) );
 		worldTexCoordsFar.push( ( vec2(cubeTexCoordsArray[i][0] *1, cubeTexCoordsArray[i][1] * .5) ) );
 	}
 }
@@ -446,7 +446,7 @@ function populateWorld()
 	
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );	
 
-	gl.drawArrays( gl.TRIANGLES, 24, 6 );
+	//gl.drawArrays( gl.TRIANGLES, 24, 6 );
 	
 }
 function drawPlane()

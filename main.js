@@ -39,6 +39,16 @@ var posY = 0.0;
 
 var flag = 0;
 
+function goFullScreen(){
+    var canvas = document.getElementById("gl-canvas");
+    if(canvas.requestFullScreen)
+        canvas.requestFullScreen();
+    else if(canvas.webkitRequestFullScreen)
+        canvas.webkitRequestFullScreen();
+    else if(canvas.mozRequestFullScreen)
+        canvas.mozRequestFullScreen();
+}
+
 
 window.onload = function init() {
 
@@ -46,7 +56,10 @@ window.onload = function init() {
     canvas = document.getElementById( "gl-canvas" );
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
-
+	
+	canvas.width  = window.innerWidth;
+	canvas.height = window.innerHeight;
+	
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 0, 0, 0, 1.0 );
     gl.enable(gl.DEPTH_TEST);
@@ -110,7 +123,7 @@ window.onload = function init() {
 	
 	mvMatrix = mult( translate(-3,0,-50), mvMatrix);
 	
-	var pMatrix = perspective( 7, canvas.width/canvas.height, 1, 1000);
+	var pMatrix = perspective( 7, canvas.width/canvas.height, 1, 1500);
 	mvMatrix = mult( rotate(0, [0,0,1]  ), mvMatrix);
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
     gl.uniformMatrix4fv(pMatrixLoc, false, flatten(pMatrix));
@@ -249,22 +262,22 @@ var render = function(){
     	}
     } 
     
-    	if(!collided)
-    	{
-			scrolling += scrollEase;
-			scrollIter++;
-    	}
-    	else
-    	{
-    		//collided = 1;
-    		if(!flag)
-    		{
-    			var sound = document.getElementById("crash");
-				sound.play();
-				flag = 1;
-			}
-			
-    	}
+	if(!collided)
+	{
+		scrolling += scrollEase;
+		scrollIter++;
+	}
+	else
+	{
+		//collided = 1;
+		if(!flag)
+		{
+			var sound = document.getElementById("crash");
+			sound.play();
+			flag = 1;
+		}
+		
+	}
     
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
 
@@ -297,8 +310,14 @@ var render = function(){
 	
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
 	
+	var ctm = mat4();
+	ctm = mult(ctm, mvMatrix);
+	ctm = mult(ctm, translate(vec3(0,18,-15*buildIter + scrolling)));
+	ctm = mult(ctm, scale(vec3(4,1.5,100)));
 	
-	//populateWorld();
+	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
+	
+	populateWorld();
 	gl.uniform1f(changeColorLoc, 1.0);
 	
 	var ctm = mat4();
@@ -327,9 +346,6 @@ var render = function(){
 	
 	gl.uniform1f(changeColorLoc, 0.0);
 
-	document.getElementById('collision').innerHTML = detectCollision();
-	//document.getElementById('collision').innerHTML = suffledGeoArray.length;
-	
 	window.requestAnimFrame( render );
 }
 
