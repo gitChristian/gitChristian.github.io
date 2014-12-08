@@ -142,7 +142,7 @@ window.onload = function init() {
 }
 
 var render = function(){
-
+	clearAABB();
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	$display = $('.count');
 	if(!collided)
