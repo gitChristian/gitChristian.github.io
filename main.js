@@ -23,9 +23,18 @@ var iterR = 0;
 var iterU = 0;
 var iterD = 0;
 
-var scrollEase = 1.24;
+var scrollEase = 2.34;
 
 var turnSpeed = .4;
+
+var boundLeft = -10.0;
+var boundRight = 10.0;
+var boundUp = 0;
+var boundDown = 0;
+
+var posX = 0.0;
+var posY = 0.0;
+
 
 window.onload = function init() {
 
@@ -92,7 +101,7 @@ window.onload = function init() {
 	
 	mvMatrix = mult( translate(-3,0,-50), mvMatrix);
 	
-	var pMatrix = perspective( 10, canvas.width/canvas.height, 1, 1000);
+	var pMatrix = perspective( 7, canvas.width/canvas.height, 1, 1000);
 	mvMatrix = mult( rotate(0, [0,0,1]  ), mvMatrix);
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
     gl.uniformMatrix4fv(pMatrixLoc, false, flatten(pMatrix));
@@ -134,15 +143,17 @@ var render = function(){
 	//controls
     if(right)
     {
-    	
     	if(iterR<=10)
     	{
     		iterR++;
 			mvMatrix = mult(rotate(.8,vec3(0,0,1)),mvMatrix);	
 			degree+=.8;
 		}
-		
-		mvMatrix = mult(mvMatrix, translate(vec3(-turnSpeed,0,0)));
+		if(posX <= 34)
+		{
+			posX+=turnSpeed;
+			mvMatrix = mult(mvMatrix, translate(vec3(-turnSpeed,0,0)));
+		}
 		
     }
     if(rightKeyUp)
@@ -164,7 +175,11 @@ var render = function(){
 			mvMatrix = mult(rotate(-.8,vec3(0,0,1)),mvMatrix);
 			degree-=.8;	
 		}
-		mvMatrix = mult(mvMatrix, translate(vec3(turnSpeed,0,0)));
+		if(posX >=-24)
+		{
+			posX-=turnSpeed;
+			mvMatrix = mult(mvMatrix, translate(vec3(turnSpeed,0,0)));
+		}
     }
     
     if(leftKeyUp)
@@ -184,8 +199,12 @@ var render = function(){
 			iterU++;
 			degreeY+=.8;
 		}
-		
-		mvMatrix = mult(mvMatrix, translate(vec3(0,turnSpeed,0)));
+		if(posY <= 5)
+		{
+			posY += turnSpeed;
+			mvMatrix = mult(mvMatrix, translate(vec3(0,turnSpeed,0)));
+			
+		}
     }
     if(upKeyUp)
     {
@@ -204,7 +223,11 @@ var render = function(){
     		iterD--;
     		degreeY-=.8;
 		}
-		mvMatrix = mult(mvMatrix, translate(vec3(0,-turnSpeed,0)));
+		if(posY >= -10)
+		{
+			posY -= turnSpeed;
+			mvMatrix = mult(mvMatrix, translate(vec3(0,-turnSpeed,0)));
+		}
     }
     
     if(downKeyUp)
@@ -256,7 +279,7 @@ var render = function(){
 	var ctm = mat4();
 	
 	//ctm = mult(ctm, mvMatrix);
-	ctm = mult(ctm, translate(vec3(0,-1,-15.8)));
+	ctm = mult(ctm, translate(vec3(0,-.9,-21.5)));
 	ctm = mult(ctm, scale(vec3(1.3,1.3,1.3)));
 	ctm = mult(ctm, rotate(-degree,vec3(0,1,0)));
 	ctm = mult(ctm, rotate(-degree,vec3(0,0,1)));

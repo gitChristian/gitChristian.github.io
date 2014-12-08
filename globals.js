@@ -3,7 +3,7 @@ var gl;
 var program;
 
 //how many rows of buildings to be drawn
-var buildIter=100;
+var buildIter=300;
 
 //geometry arrays
 var buildingPointsArray1 = [], buildingPointsArray2 = [], buildingPointsArray3 = [], 
@@ -159,23 +159,42 @@ var buildingTexCoord = [
     
     var Indices = 
     [
-                vertices[0], vertices[1],vertices[2],
-                vertices[0], vertices[2], vertices[3],                               // Front face
-                vertices[4], vertices[5], vertices[6], 
-                vertices[4], vertices[6], vertices[7],
-                vertices[9],vertices[10],vertices[11],    
-                vertices[9],vertices[11],vertices[14],   
-                vertices[11],vertices[12],vertices[14],
-                vertices[12],vertices[13],vertices[14],      //left wing
-                vertices[15],vertices[16],vertices[18],
-                vertices[16],vertices[17],vertices[18],                                //back
-                vertices[27],vertices[28],vertices[29], 
-                vertices[27],vertices[29],vertices[30],
-                vertices[27],vertices[30],vertices[32],
-                vertices[30],vertices[31],vertices[32],           //right wing
-                vertices[33],vertices[34],vertices[37],     
-                vertices[34],vertices[36],vertices[37],    
-                vertices[34],vertices[35],vertices[36],                         //right armor
+                vertices[0], vertices[1], vertices[2],  //VA VA2 VA0, checked 12/5
+                vertices[0], vertices[2], vertices[3], //VA VA0 VA3, checked 12/5                              // Front face
+                vertices[4], vertices[5], vertices[6], //Z1 VA2 Z4, checked 12/5
+                vertices[4], vertices[6], vertices[7], //Z1 Z4 Z5, checked 12/5
+                vertices[4], vertices[7], vertices[15],  //Z1 Z5 F, added 12/5
+                vertices[9], vertices[10],vertices[11], //Z4 B C, checked 12/5
+                vertices[9], vertices[11],vertices[14], //Z4 C Z5, checked 12/5
+                vertices[11],vertices[12],vertices[14], //C D Z5, checked 12/5
+                vertices[12],vertices[13],vertices[14], //D E Z5, checked 12/5     //left wing
+                //Y5 Y4 G, checked 12/5//right
+                //vertices[27],vertices[28],vertices[29], //I J K not passed check redo label
+                //vertices[27],vertices[29],vertices[30], //I K L
+                // vertices[27],vertices[30],vertices[32], //I L Z3
+                //vertices[30],vertices[31],vertices[32], //L Z2 Z3 checked   
+
+
+
+
+                vertices[29],vertices[30],vertices[31], //K L Z2  redo begin
+                vertices[32],vertices[31],vertices[29], //Z3 Z2 K, redo, 12/5
+                vertices[28],vertices[29],vertices[32], //J K Z3, redo, 12/5
+                vertices[27],vertices[28],vertices[32], //I J Z3 redo 12/5  
+
+
+                vertices[15],vertices[16],vertices[18], //F Z1 G, checked 12/5
+                vertices[16],vertices[17],vertices[18], //Z1 H G, checked 12/5                               //back
+                vertices[19],vertices[20],vertices[22], //Y1 Y2 G, checked 12/5
+                vertices[20],vertices[21],vertices[22], //Y2 Y3 G, checked 12/5  //left back part
+                vertices[23],vertices[24],vertices[26], //Y6, Y5, G, checked 12/5
+                vertices[24],vertices[25],vertices[26], 
+
+
+                       //right wing
+                vertices[33],vertices[34],vertices[37],  //H Z1 Z3 changed  12/5
+                vertices[34],vertices[36],vertices[37],  //Z1 Z2 Z3 checked 12/5  
+                vertices[34],vertices[35],vertices[36],  //Z1 Z2 VA3 checked 12/5                      //right armor
                 vertices[38],vertices[39],vertices[40],      
                 vertices[38],vertices[40],vertices[41],    
                 vertices[38],vertices[41],vertices[42],   
@@ -187,7 +206,7 @@ var buildingTexCoord = [
                 vertices[38],vertices[47],vertices[48],   
                 vertices[38],vertices[48],vertices[49],
                 vertices[50],vertices[51],vertices[53],
-                vertices[52],vertices[51],vertices[53], //missed part
+                vertices[52],vertices[51],vertices[53] //missed part
                  //bottom   
 
     ];

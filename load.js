@@ -114,7 +114,7 @@ function createBuffers()
 	planeBuffer = gl.createBuffer();
 	
 	var bullshitPoints = [];
-	for(var i = 0; i<87; i++)
+	for(var i = 0; i<102; i++)
 	{
 		bullshitPoints.push(vec2(0,0));
 	}
@@ -456,6 +456,6 @@ function drawPlane()
 	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
 	gl.bindBuffer( gl.ARRAY_BUFFER, bullshitTexBuffer );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
-	gl.drawArrays( gl.TRIANGLES, 0,  87);
+	gl.drawArrays( gl.TRIANGLES, 0,  102);
 }
 
