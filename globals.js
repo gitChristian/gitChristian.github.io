@@ -8,7 +8,7 @@ var buildIter=1000;
 //geometry arrays
 var buildingPointsArray1 = [], buildingPointsArray2 = [], buildingPointsArray3 = [], 
 	buildingPointsArray4 = [], buildingPointsArray5 = [],
-	mainGeoArray = [], suffledGeoArray = [], mainGeoRoofArray = [];
+	mainGeoArray = [], mainGeoArray_copy = [], suffledGeoArray = [], mainGeoRoofArray = [];
 var cubeArray = [];
 var worldArray = [];
 

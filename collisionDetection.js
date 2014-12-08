@@ -7,20 +7,19 @@
 
 // Need to include MV.js
 //---------------------------------------------------------------------------------------------------
-var unitAABBmin = vec4(-0.25, -0.3, 0, 1);
-var unitAABBmax = vec4(0.25, 0.3, 1, 2);
 var AABBminArray = [];
 var AABBmaxArray = [];
 var planeAABBmin = vec4();
 var planeAABBmax = vec4();
-var currPlaneAABBmin = vec4();
-var currPlaneAABBmax = vec4();
 
 // Given a transformation matrix (transformation from object coordinate to world coordinate), create
 // the corresponding Axis-Aligned Bounding Box and push it to the array.
-function addAABB(ctm) {
-	AABBmaxArray.push( matMultVec(ctm, unitAABBmax) );
-	AABBminArray.push( matMultVec(ctm, unitAABBmin) );
+function addAABB(ctm, buffer) {
+	var temp = createAABB( applyTransformation( ctm, buffer ) );
+	var AABBmin = vec4( temp[0][0], temp[0][1], temp[0][2], temp[0][3] );
+	var AABBmax = vec4( temp[1][0], temp[1][1], temp[1][2], temp[1][3] );
+	AABBminArray.push( AABBmin );
+	AABBmaxArray.push( AABBmax );
 }
 
 // Clear the buffer at the beginning of every render(), since buildings are translated to new positions
@@ -28,30 +27,35 @@ function addAABB(ctm) {
 function clearAABB() {
 	AABBminArray = [];
 	AABBmaxArray = [];
-	currPlaneAABBmin = [];
-	currPlaneAABBmax = [];
 }
 
 // Take the vertices buffer of the plane as a input, create an Axis-Aligned Bounding Box for the plane
-function createPlaneAABB(buffer) {
+function createAABB(buffer) {
+	var result = [];
+	var AABBmax = vec4();
+	var AABBmin = vec4();
 	for (var k = 0; k < 3; ++k)
 	{
-		planeAABBmax[k] = buffer[0][k];
-		planeAABBmin[k] = buffer[0][k];
+		AABBmax[k] = buffer[0][k];
+		AABBmin[k] = buffer[0][k];
 	}
 	for (var i = 1; i < buffer.length; ++i)
 	{
 		for (var j = 0; j < 3; ++j)
 		{
-			planeAABBmax[j] = Math.max( planeAABBmax[j], buffer[i][j] );
-			planeAABBmin[j] = Math.min( planeAABBmin[j], buffer[i][j] );
+			AABBmax[j] = Math.max( AABBmax[j], buffer[i][j] );
+			AABBmin[j] = Math.min( AABBmin[j], buffer[i][j] );
 		}
 	}
+	result.push(AABBmin);
+	result.push(AABBmax);
+	return result;
 }
 
-function updatePlaneAABB(ctm) {
-	currPlaneAABBmax = matMultVec( ctm, planeAABBmax );
-	currPlaneAABBmin = matMultVec( ctm, planeAABBmin );
+function updatePlaneAABB(ctm, buffer) {
+	var temp = createAABB( applyTransformation( ctm, buffer ) );
+	planeAABBmin = vec4( temp[0][0], temp[0][1], temp[0][2], temp[0][3] );
+	planeAABBmax = vec4( temp[1][0], temp[1][1], temp[1][2], temp[1][3] );
 }
 
 // Return true if collision detected
@@ -71,6 +75,18 @@ function detectCollision() {
 		}
 	}
 	return false;
+}
+
+
+function applyTransformation ( ctm , buffer ) {
+	var result = [];
+	var temp;
+	for (var i = 0; i < buffer.length; ++i)
+	{
+		temp = vec4( buffer[i][0], buffer[i][1], buffer[i][2], buffer[i][3] );
+		result.push( matMultVec( ctm, temp ) );
+	}
+	return result;
 }
 
 
@@ -157,11 +173,11 @@ function intersect_primitive_primitive (buffer1, buffer2) {
 
 // Check collision between two Axis-Aligned Bounding Boxes
 function singleCheck(i) {
-	if (currPlaneAABBmax[0] < AABBminArray[i][0] || currPlaneAABBmin[0] > AABBmaxArray[i][0])
+	if (planeAABBmax[0] < AABBminArray[i][0] || planeAABBmin[0] > AABBmaxArray[i][0])
 		return false;
-	if (currPlaneAABBmax[1] < AABBminArray[i][1] || currPlaneAABBmin[1] > AABBmaxArray[i][1])
+	if (planeAABBmax[1] < AABBminArray[i][1] || planeAABBmin[1] > AABBmaxArray[i][1])
 		return false;
-	if (currPlaneAABBmax[2] < AABBminArray[i][2] || currPlaneAABBmin[2] > AABBmaxArray[i][2])
+	if (planeAABBmax[2] < AABBminArray[i][2] || planeAABBmin[2] > AABBmaxArray[i][2])
 		return false;
 	return true;
 }

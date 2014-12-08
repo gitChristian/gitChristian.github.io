@@ -61,6 +61,11 @@ window.onload = function init() {
 	{
 		loadBuildings(i);
 	}
+	// Make a copy of mainGeoArray used for collision detection
+	for (var i = 0; i < mainGeoArray.length; ++i)
+		mainGeoArray_copy.push( vec4(mainGeoArray[i][0], mainGeoArray[i][1], mainGeoArray[i][2], mainGeoArray[i][3]) );
+	
+	
 	loadBuffers();
 
 	normalBuffer = gl.createBuffer();
@@ -133,7 +138,6 @@ window.onload = function init() {
 		}
 	};
 	
-	createPlaneAABB(cubeArray);
     render();
 }
 
@@ -257,8 +261,7 @@ var render = function(){
    // }
     
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
-	clearAABB();
-	updatePlaneAABB( translate(-mvMatrix[0][3], -mvMatrix[1][3], -mvMatrix[2][3]) );
+
 
 	var ctm = mat4();
 	ctm = mult(ctm, mvMatrix);
@@ -271,6 +274,23 @@ var render = function(){
 	
 	populateBuildings();
 	seed=1;
+	
+	// Create bounding box for each building
+	var tempBuffer = [];
+	var testPoint;
+	for (var i = 0; i < mainGeoArray_copy.length; i += 36)
+	{
+		testPoint = vec4( mainGeoArray_copy[i][0], mainGeoArray_copy[i][1], mainGeoArray_copy[i][2], mainGeoArray_copy[i][3] );
+		if ( Math.abs( planeAABBmin[2] - matMultVec( ctm, testPoint )[2] ) < 24 )
+		{
+			tempBuffer = [];
+			for (var j = 0; j < 36; ++j)
+			{
+				tempBuffer.push( vec4(mainGeoArray_copy[i+j][0], mainGeoArray_copy[i+j][1], mainGeoArray_copy[i+j][2], mainGeoArray_copy[i+j][3]) );
+			}
+			addAABB( ctm, tempBuffer );
+		}
+	}
 	
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
 	
@@ -290,10 +310,12 @@ var render = function(){
 
 	drawPlane();
 	
+	updatePlaneAABB( ctm, Indices );	// Update bounding box for the plane
+	
 	gl.uniform1f(changeColorLoc, 0.0);
 
 	document.getElementById('collision').innerHTML = detectCollision();
-	
+	//document.getElementById('collision').innerHTML = suffledGeoArray.length;
 	
 	window.requestAnimFrame( render );
 }
