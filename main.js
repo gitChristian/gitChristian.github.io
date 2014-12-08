@@ -273,7 +273,7 @@ var render = function(){
 	for (var i = 0; i < mainGeoArray_copy.length; i += 36)
 	{
 		testPoint = vec4( mainGeoArray_copy[i][0], mainGeoArray_copy[i][1], mainGeoArray_copy[i][2], mainGeoArray_copy[i][3] );
-		if ( Math.abs( planeAABBmin[2] - matMultVec( ctm, testPoint )[2] ) < 24 )
+		if ( Math.abs( planeAABBmin[2] - matMultVec( ctm, testPoint )[2] ) < 1 )
 		{
 			tempBuffer = [];
 			for (var j = 0; j < 36; ++j)
