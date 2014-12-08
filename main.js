@@ -37,6 +37,8 @@ var boundDown = 0;
 var posX = 0.0;
 var posY = 0.0;
 
+var flag = 0;
+
 
 window.onload = function init() {
 
@@ -253,7 +255,16 @@ var render = function(){
 			scrollIter++;
     	}
     	else
-    		collided = 1;
+    	{
+    		//collided = 1;
+    		if(!flag)
+    		{
+    			var sound = document.getElementById("crash");
+				sound.play();
+				flag = 1;
+			}
+			
+    	}
     
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
 
@@ -309,6 +320,7 @@ var render = function(){
 		if(detectCollision())
 		{
 			collided = 1;
+			
 		}
 
 	
