@@ -273,7 +273,8 @@ var render = function(){
 		if(!flag)
 		{
 			var sound = document.getElementById("crash");
-			sound.play();
+			if($('#sound-btn').hasClass('play'))
+				sound.play();
 			$(".menu-wrap").show();
 			$(".count").hide();
 			flag = 1;
