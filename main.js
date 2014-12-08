@@ -16,6 +16,8 @@ var degree = 0;
 var degreeY = 0;
 
 var scrolling = 0;
+var scrollIter = 0;
+
 var limit = 0;
 
 var iterL = 0;
@@ -139,7 +141,6 @@ var render = function(){
 
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-
 	//controls
     if(right)
     {
@@ -252,6 +253,7 @@ var render = function(){
     		scrollEase += .24;
     	}*/
     	scrolling += scrollEase;
+    	scrollIter++;
    // }
     
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
@@ -348,4 +350,8 @@ document.addEventListener('keyup', function(event) {
 	}
 
 });
+
+
+
+
 

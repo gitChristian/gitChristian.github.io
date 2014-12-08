@@ -3,7 +3,7 @@ var gl;
 var program;
 
 //how many rows of buildings to be drawn
-var buildIter=300;
+var buildIter=1000;
 
 //geometry arrays
 var buildingPointsArray1 = [], buildingPointsArray2 = [], buildingPointsArray3 = [], 
