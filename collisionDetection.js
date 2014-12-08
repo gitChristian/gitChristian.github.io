@@ -1,18 +1,27 @@
 //---------------------------------------------------------------------------------------------------
-// I suppose that the buildings are created by transforming a unit cube, thus the bounding box can be 
-// created in the same way (transforming a unit bounding box)
-
-// cross(u, v) only works for vec3
-// translate() and scale() create 4x4 matrices
-
+// This file contains all functions needed for collision detection
+// This file also contains a function to generate normal vectors for flat shading
+//
+// ATTENTION
+// All vertices are supposed to be represented as vec4
 // Need to include MV.js
+//
+//
+// A Brief Introduction to the Algorithm:
+// - Object Representation: Axis-Aligned Bounding Box (AABB) represented by Min/Max extreme points (six floats).
+// - When collision between bounding boxed detected, a thorough collision check is performed.
+// - Precise collision check is based on intersection test between two triangles.
+//
+//
+// Zhen Liu
+// Last modified: Dec 8, 2014
 //---------------------------------------------------------------------------------------------------
-var AABBminArray = [];
-var AABBmaxArray = [];
-var planeAABBmin = vec4();
-var planeAABBmax = vec4();
-var buildingCheckBuffer = [];
-var planeCheckBuffer = [];
+var AABBminArray = [];			// An array stores all the maximum extreme points of bounding boxes of buildings
+var AABBmaxArray = [];			// An array stores all the minimum extreme points of bounding boxes of buildings
+var planeAABBmin = vec4();		// Maximum extreme point of plane's bounding box
+var planeAABBmax = vec4();		// Minimum extreme point of plane's bounding box
+var buildingCheckBuffer = [];	// Stores all the vertices of buildings that are potentially colliding with the plane (in camera coordinate system)
+var planeCheckBuffer = [];		// Stores all the vertices of the plane in camera coordinate system
 
 // Given a transformation matrix (transformation from object coordinate to world coordinate), create
 // the corresponding Axis-Aligned Bounding Box and push it to the array.
@@ -28,7 +37,6 @@ function addAABB(ctm, buffer) {
 }
 
 // Clear the buffer at the beginning of every render(), since buildings are translated to new positions
-// during the procedure thus we need to create new buffer every time.
 function clearAABB() {
 	AABBminArray = [];
 	AABBmaxArray = [];
@@ -36,7 +44,7 @@ function clearAABB() {
 	planeCheckBuffer = [];
 }
 
-// Take the vertices buffer of the plane as a input, create an Axis-Aligned Bounding Box for the plane
+// Take the an array of vertices as a input, create an Axis-Aligned Bounding Box for the input object
 function createAABB(buffer) {
 	var result = [];
 	var AABBmax = vec4();
@@ -75,7 +83,7 @@ function detectCollision() {
 	{
 		if (singleCheck(i))
 		{
-			// Potential collision detected, return true or perform precise check
+			// Potential collision detected, perform precise check
 			// The plane is potentially colliding with the building #i, I need to retrieve all vertices 
 			// of this building and plane, then check intersection between all triangles on plane with 
 			// all triangles on the building.
@@ -89,7 +97,7 @@ function detectCollision() {
 	return false;
 }
 
-
+// Multiply transformation matrix (ctm) to all points in the buffer
 function applyTransformation ( ctm , buffer ) {
 	var result = [];
 	var temp;
