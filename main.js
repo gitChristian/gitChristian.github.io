@@ -342,7 +342,7 @@ var render = function(){
 	ctm = mult(ctm, scale(vec3(1.3,1.3,1.3)));
 	ctm = mult(ctm, rotate(-degree,vec3(0,1,0)));
 	ctm = mult(ctm, rotate(-degree,vec3(0,0,1)));
-	ctm = mult(ctm, rotate(-degreeY*1.5,vec3(1,0,0)));
+	ctm = mult(ctm, rotate(-degreeY*1.5 + 3,vec3(1,0,0)));
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
 
 	if(!collided)
