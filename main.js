@@ -95,6 +95,7 @@ window.onload = function init() {
 	
 	
 	samplerLoc = gl.getUniformLocation(program, "texture");
+	samplerLoc2 = gl.getUniformLocation(program, "texture2");
 	
 	UNIFORM_ambientProduct = gl.getUniformLocation(program, "ambientProduct");
     UNIFORM_diffuseProduct = gl.getUniformLocation(program, "diffuseProduct");

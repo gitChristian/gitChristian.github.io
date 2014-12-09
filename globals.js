@@ -27,7 +27,7 @@ var worldTexCoords=[], worldTexCoordsFar = [];
 //location in shaders
 var vPosition;
 var vBuildTexCoord;
-var samplerLoc, changeColorLoc;
+var samplerLoc, samplerLoc2, changeColorLoc;
 var mvMatrixLoc, pMatrixLoc;
 
 //Color variables
@@ -41,16 +41,16 @@ var ATTRIBUTE_normal;
 var normalBuffer;
 var planeNormalsArray =[];
 
-var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0);
-var materialAmbient = vec4(0.0, 0.0, 1.0, 1.0);
+var lightAmbient = vec4(1, 1, 1, 1.0);
+var materialAmbient = vec4(1, 1, 1.0, 1.0);
 var ambientProduct = mult(lightAmbient, materialAmbient);
 
-var lightDiffuse = vec4(0.6, 0.6, 0.6, 1.0);
-var materialDiffuse = vec4(0.0, 0.6, 0.6, 1.0);
+var lightDiffuse = vec4(1, 1, 1, 1.0);
+var materialDiffuse = vec4(0.3, 0.3, 0.3, 1.0);
 var diffuseProduct = mult(lightDiffuse, materialDiffuse);
 
-var lightSpecular = vec4(0.4, 0.4, 0.4, 1.0);
-var materialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+var lightSpecular = vec4(1, 1, 1, 1.0);
+var materialSpecular = vec4(0.3, 0.3, 0.3, 1.0);
 var specularProduct = mult(lightSpecular, materialSpecular);
 
 var shininess = 50;
