@@ -17,6 +17,12 @@ uniform float colorChange;
 varying vec2 fBuildTexCoord;
 varying vec4 fColor;
 varying float fColorChange;
+varying vec4 fPosition;
+varying vec3 fLightPosition;
+varying mat4 fmvMatrix;
+varying vec4 fAmbientProduct;
+varying vec4 fDiffuseProduct;
+varying vec4 fSpecularProduct;
 
 void main()
 {
@@ -56,8 +62,13 @@ void main()
 	gl_Position = pMatrix * mvMatrix * vPosition;
 	fBuildTexCoord = vBuildTexCoord;
 	fColorChange = colorChange;
-	
-    
+	fPosition = vPosition;
+	fLightPosition = lightPosition;
+    fmvMatrix = mvMatrix;
+	fAmbientProduct =ambientProduct;
+    fDiffuseProduct = diffuseProduct;
+    fSpecularProduct = specularProduct ;
+
 }
 </script>
 
@@ -68,7 +79,16 @@ precision mediump float;
 varying vec2 fBuildTexCoord;
 varying vec4 fColor;
 varying float fColorChange;
+varying vec4 fPosition;
+varying vec3 fLightPosition;
+varying mat4 fmvMatrix;
+varying vec4 fAmbientProduct;
+varying vec4 fDiffuseProduct;
+varying vec4 fSpecularProduct;
+
+
 uniform sampler2D texture;
+uniform sampler2D texture2;
 
 
 
@@ -76,6 +96,41 @@ void main()
 {
    if(fColorChange==0.0)
     	gl_FragColor = texture2D( texture, fBuildTexCoord );
+	else if(fColorChange==2.0)
+	{
+		//bump map part
+		//vec3 NN =  normalize(texture2D( texture2, fBuildTexCoord ).rgb * 2.0 - 1.0);  
+		vec3 NN =  normalize(texture2D( texture2, fBuildTexCoord ).rgb * 2.0 - 1.0);  
+		
+		vec3 pos = (fmvMatrix * fPosition).xyz;
+		
+		//light position in camera space
+		vec3 L = normalize(fLightPosition - pos); 
+		vec3 E = normalize(-pos);
+		vec3 H = normalize(L + E);
+		vec3 N = normalize(fmvMatrix * vec4(NN, 0.0)).xyz; 
+		vec4 ambient = fAmbientProduct;
+		float kd = max( dot(L,N), 0.0 );
+		vec4 diffuse = kd * fDiffuseProduct;
+
+		//float ks = pow(abs(dot(N, H)), shininess);
+		float ks = pow( max(dot(N, H), 0.0), 500.0 );
+		vec4 specular = ks * fSpecularProduct;
+		
+		
+		
+		if( dot(L, N) < 0.0 ) {
+			specular = vec4(0.0, 0.0, 0.0, 1.0);
+		} 
+		
+		vec4 bumpColor = ambient + diffuse + specular;
+		bumpColor.a = 1.0;
+		
+		
+		gl_FragColor = texture2D( texture, fBuildTexCoord ) * bumpColor ; 
+	
+	
+	}
    else if(fColorChange==1.0) 
     	gl_FragColor = fColor;
 }

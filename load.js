@@ -221,7 +221,7 @@ function loadTextures()
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
     }
-	floorTex.image.src = "images/lava.jpg";
+	floorTex.image.src = "images/Asphalt.jpg";
 	
 	//world sky
 	skyTex = gl.createTexture();
@@ -251,6 +251,7 @@ function loadTextures()
     }
 	farTex.image.src = "images/skybox/negx.jpg";
 	
+	//bump map
 	groundBump = gl.createTexture();
 	groundBump.image = new Image();
     groundBump.image.onload = function(){
@@ -262,7 +263,7 @@ function loadTextures()
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
     }
-	groundBump.image.src = "images/ground_bump.jpg";
+	groundBump.image.src = "images/Asphalt.jpg";
 
 }
 
@@ -450,11 +451,22 @@ function populateWorld()
 	gl.bindBuffer( gl.ARRAY_BUFFER, floorTexBuffer );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
 	
+	//draw floor
+	gl.uniform1f(changeColorLoc, 2.0);
+	gl.activeTexture(gl.TEXTURE0);
 	gl.bindTexture(gl.TEXTURE_2D, floorTex);
+	gl.uniform1i(samplerLoc,0);
 	
+	gl.activeTexture(gl.TEXTURE1);
+	gl.bindTexture(gl.TEXTURE_2D, groundBump);
+	gl.uniform1i(samplerLoc2,1);
 	gl.drawArrays( gl.TRIANGLES, 12, 6 );
 	
+	//draw sky
+	gl.uniform1f(changeColorLoc, 0.0);
+	gl.activeTexture(gl.TEXTURE0);
 	gl.bindTexture(gl.TEXTURE_2D, skyTex);
+	gl.uniform1i(samplerLoc,0);
 	
 	gl.drawArrays( gl.TRIANGLES, 18, 6 );	
 
