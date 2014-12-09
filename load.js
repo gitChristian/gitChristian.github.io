@@ -469,5 +469,11 @@ function loadPlaneNormals()
 	{
 		planeNormalsArray.push(temp[i]);
 	}
+	for (var j = 15; j < 27; ++j)
+		planeNormalsArray[j] = negate( planeNormalsArray[j] );
+	for (var k = 27; k < 39; ++k)
+		planeNormalsArray[k] = negate( planeNormalsArray[k] );
+	for (var l = 42; l < 54; ++l)
+		planeNormalsArray[l] = negate( planeNormalsArray[l] );
 }
 
