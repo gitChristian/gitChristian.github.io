@@ -65,6 +65,7 @@ var roofTex, floorTex, skyTex, farTex;
 var buildingGeoBuffer1,buildingGeoBuffer2,buildingGeoBuffer3,buildingGeoBuffer4, buildingGeoBuffer5, mainGeoBuffer, geoRoofBuffer;
 var buildingTexBuffer1,buildingTexBuffer2,buildingTexBuffer3,buildingTexBuffer4, buildingTexBuffer5, mainTexCoordsBuffer, roofTexCoordsBuffer;
 var worldBuffer, floorTexBuffer, farTexBuffer, planeBuffer, bullshitTexBuffer;
+var groundBump;
 
 //transformation matrix
 var buildingCtm =mat4();
