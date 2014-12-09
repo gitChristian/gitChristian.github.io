@@ -132,6 +132,7 @@ window.onload = function init() {
 var render = function(){
 	clearAABB();
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.uniform1f(changeColorLoc, 0.0);
 	$display = $('.count');
 	if(!collided)
 		$display.text(3*scrollIter);
@@ -337,7 +338,7 @@ var render = function(){
 		}
 
 	
-	gl.uniform1f(changeColorLoc, 0.0);
+	
 
 	window.requestAnimFrame( render );
 }
