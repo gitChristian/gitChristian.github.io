@@ -77,6 +77,7 @@ function makeWorld()
 	}
 }
 
+//also binds plane buffer here
 function createBuffers()
 {
 	
@@ -110,22 +111,12 @@ function createBuffers()
 	
 	farTexBuffer = gl.createBuffer();
 	
+	//plane geometry
 	planeBuffer = gl.createBuffer();
 	
-	var bullshitPoints = [];
-	for(var i = 0; i<102; i++)
-	{
-		bullshitPoints.push(vec2(0,0));
-	}
+	//plane normals
+	normalBuffer = gl.createBuffer();
 	
-	bullshitTexBuffer = gl.createBuffer();
-	gl.bindBuffer( gl.ARRAY_BUFFER, bullshitTexBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(bullshitPoints), gl.STATIC_DRAW );
-	
-	//plane buffer
-    gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(Indices), gl.STATIC_DRAW );
-
 }
 
 
@@ -390,7 +381,15 @@ function loadBuffers()
     //far wall
     gl.bindBuffer( gl.ARRAY_BUFFER, farTexBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(worldTexCoordsFar), gl.STATIC_DRAW );
-
+	
+	//plane buffer
+    gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(Indices), gl.STATIC_DRAW );
+	
+	//plane normals
+	gl.bindBuffer( gl.ARRAY_BUFFER, normalBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(planeNormalsArray), gl.STATIC_DRAW );
+	
 }
 
 
@@ -451,10 +450,24 @@ function populateWorld()
 }
 function drawPlane()
 {
+	gl.enableVertexAttribArray( ATTRIBUTE_normal );
+	gl.disableVertexAttribArray( vBuildTexCoord );
+	
 	gl.bindBuffer( gl.ARRAY_BUFFER, planeBuffer );
 	gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
-	gl.bindBuffer( gl.ARRAY_BUFFER, bullshitTexBuffer );
-	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
+	gl.bindBuffer( gl.ARRAY_BUFFER, normalBuffer );
+	gl.vertexAttribPointer( ATTRIBUTE_normal, 3, gl.FLOAT, false, 0, 0 );
+	
 	gl.drawArrays( gl.TRIANGLES, 0,  102);
+}
+
+//loads normals into plane array
+function loadPlaneNormals()
+{
+	var temp = generateNormals(Indices);
+	for(var i =0; i< temp.length; i++)
+	{
+		planeNormalsArray.push(temp[i]);
+	}
 }
 

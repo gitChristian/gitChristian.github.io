@@ -52,7 +52,6 @@ function goFullScreen(){
 
 window.onload = function init() {
 
-
     canvas = document.getElementById( "gl-canvas" );
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
@@ -72,6 +71,7 @@ window.onload = function init() {
 	loadTextures();
 	makeCube();
 	makeWorld();
+	loadPlaneNormals();
 	for(var i=-20; i>-buildIter*3 - 20; i-=3)
 	{
 		loadBuildings(i);
@@ -82,11 +82,9 @@ window.onload = function init() {
 	
 	
 	loadBuffers();
-
-	normalBuffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, normalBuffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW );
-
+	
+	
+	
 	//get locations in shader and enable variables
 	vPosition = gl.getAttribLocation( program, "vPosition" );
 	vBuildTexCoord = gl.getAttribLocation( program, "vBuildTexCoord" );
@@ -94,7 +92,7 @@ window.onload = function init() {
 	
 	gl.enableVertexAttribArray( vPosition );
 	gl.enableVertexAttribArray( vBuildTexCoord );
-	//gl.enableVertexAttribArray( ATTRIBUTE_normal );
+	
 	
 	samplerLoc = gl.getUniformLocation(program, "texture");
 	
@@ -348,9 +346,12 @@ var render = function(){
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(ctm));
 
 	if(!collided)
+	{
 	 drawPlane();
+	 gl.enableVertexAttribArray( vBuildTexCoord );
+	 gl.disableVertexAttribArray( ATTRIBUTE_normal );
+	}
 	
-
 	
 	updatePlaneAABB( ctm, Indices );	// Update bounding box for the plane
 	

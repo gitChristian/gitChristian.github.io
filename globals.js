@@ -31,13 +31,15 @@ var samplerLoc, changeColorLoc;
 var mvMatrixLoc, pMatrixLoc;
 
 //Color variables
+var UNIFORM_ambientProduct;
 var UNIFORM_specularProduct;
+var UNIFORM_diffuseProduct;
 var UNIFORM_lightPosition;
 var UNIFORM_shininess;
 var ATTRIBUTE_position;
 var ATTRIBUTE_normal;
 var normalBuffer;
-
+var planeNormalsArray =[];
 
 var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0);
 var materialAmbient = vec4(0.0, 0.0, 1.0, 1.0);
@@ -54,14 +56,6 @@ var specularProduct = mult(lightSpecular, materialSpecular);
 var shininess = 50;
 var lightPosition = vec3(-9.0, 7.0, -2.0);
 
-var normals = [
-   vec3(0,0,1),vec3(0,0,1),vec3(0,0,1),vec3(0,0,1),vec3(0,0,1),vec3(0,0,1),
-   vec3(1,0,0),vec3(1,0,0),vec3(1,0,0),vec3(1,0,0),vec3(1,0,0),vec3(1,0,0),
-   vec3(0,-1,0),vec3(0,-1,0),vec3(0,-1,0),vec3(0,-1,0),vec3(0,-1,0),vec3(0,-1,0),
-   vec3(0,1,0),vec3(0,1,0),vec3(0,1,0),vec3(0,1,0),vec3(0,1,0),vec3(0,1,0),
-   vec3(0,0,-1),vec3(0,0,-1),vec3(0,0,-1),vec3(0,0,-1),vec3(0,0,-1),vec3(0,0,-1),
-   vec3(-1,0,0), vec3(-1,0,0), vec3(-1,0,0), vec3(-1,0,0), vec3(-1,0,0), vec3(-1,0,0)  
-];
 
 //texture objects
 var buildingTex1,buildingTex2,buildingTex3,buildingTex4, buildingTex5;
@@ -96,7 +90,7 @@ var buildingTexCoord = [
 ];
 
 
-   var VA=vec4(0,0,0,1.0);
+    var VA=vec4(0,0,0,1.0);
     var B=vec4(-0.340,0,0.810,1.0);
     var C=vec4(-0.340,0,0.859,1.0);
     var D=vec4(-0.300,0,0.900,1.0);
