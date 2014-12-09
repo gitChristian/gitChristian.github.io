@@ -125,31 +125,6 @@ window.onload = function init() {
 	mvMatrix = mult( rotate(0, [0,0,1]  ), mvMatrix);
 	gl.uniformMatrix4fv(mvMatrixLoc, false, flatten(mvMatrix));
     gl.uniformMatrix4fv(pMatrixLoc, false, flatten(pMatrix));
-    
-	//end group code
-	window.onkeypress   = function(event) {
-		var key = String.fromCharCode(event.keyCode);
-		switch(key) {
-			case 'o': //closer
-				mvMatrix = mult( translate(0,0,-0.1), mvMatrix);
-				break;
-			case 'i': //away
-				mvMatrix = mult( translate(0,0,0.2), mvMatrix);
-				break;
-			case 'w': //up
-				mvMatrix = mult( translate(0,-0.1,0), mvMatrix);
-				break;
-			case 's': //down
-				mvMatrix = mult( translate(0,0.1,0), mvMatrix);
-				break;
-			case 'a': //left
-				mvMatrix = mult( translate(0.1,0,0), mvMatrix);
-				break;
-			case 'd': //right
-				mvMatrix = mult( translate(-0.1,0,0), mvMatrix);
-				break;
-		}
-	};
 	
     render();
 }
