@@ -216,8 +216,8 @@ function loadTextures()
 	gl.bindTexture(gl.TEXTURE_2D, floorTex);
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, floorTex.image);
 	gl.generateMipmap(gl.TEXTURE_2D);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
     }
@@ -258,8 +258,8 @@ function loadTextures()
 	gl.bindTexture(gl.TEXTURE_2D, groundBump);
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, groundBump.image);
 	gl.generateMipmap(gl.TEXTURE_2D);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
     }
@@ -451,6 +451,10 @@ function populateWorld()
 	gl.bindBuffer( gl.ARRAY_BUFFER, floorTexBuffer );
 	gl.vertexAttribPointer( vBuildTexCoord, 2, gl.FLOAT, false, 0, 0 );
 	
+	gl.uniform4fv(UNIFORM_ambientProduct,  flatten(vec4(1,1,1,1)));
+    gl.uniform4fv(UNIFORM_diffuseProduct,  flatten(vec4(1,1,1,1)));
+    gl.uniform4fv(UNIFORM_specularProduct, flatten(vec4(1,1,1,1)));
+	
 	//draw floor
 	gl.uniform1f(changeColorLoc, 2.0);
 	gl.activeTexture(gl.TEXTURE0);
@@ -461,6 +465,10 @@ function populateWorld()
 	gl.bindTexture(gl.TEXTURE_2D, groundBump);
 	gl.uniform1i(samplerLoc2,1);
 	gl.drawArrays( gl.TRIANGLES, 12, 6 );
+	
+	gl.uniform4fv(UNIFORM_ambientProduct,  flatten(ambientProduct));
+    gl.uniform4fv(UNIFORM_diffuseProduct,  flatten(diffuseProduct));
+    gl.uniform4fv(UNIFORM_specularProduct, flatten(specularProduct));
 	
 	//draw sky
 	gl.uniform1f(changeColorLoc, 0.0);

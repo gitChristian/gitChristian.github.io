@@ -41,16 +41,16 @@ var ATTRIBUTE_normal;
 var normalBuffer;
 var planeNormalsArray =[];
 
-var lightAmbient = vec4(1, 1, 1, 1.0);
-var materialAmbient = vec4(1, 1, 1.0, 1.0);
+var lightAmbient = vec4(.2, .2, .2, 1.0);
+var materialAmbient = vec4(.8, .8, 0.8, 1.0);
 var ambientProduct = mult(lightAmbient, materialAmbient);
 
-var lightDiffuse = vec4(1, 1, 1, 1.0);
-var materialDiffuse = vec4(0.3, 0.3, 0.3, 1.0);
+var lightDiffuse = vec4(.9, .9, .9, 1.0);
+var materialDiffuse = vec4(0, .7, 1, 1.0);
 var diffuseProduct = mult(lightDiffuse, materialDiffuse);
 
-var lightSpecular = vec4(1, 1, 1, 1.0);
-var materialSpecular = vec4(0.3, 0.3, 0.3, 1.0);
+var lightSpecular = vec4(.3, .3, .3, 1.0);
+var materialSpecular = vec4(0.9, 0.9, 0.9, 1.0);
 var specularProduct = mult(lightSpecular, materialSpecular);
 
 var shininess = 50;
@@ -68,7 +68,7 @@ var worldBuffer, floorTexBuffer, farTexBuffer, planeBuffer, bullshitTexBuffer;
 var groundBump;
 
 //transformation matrix
-var buildingCtm =mat4();
+var buildingCtm = mat4();
 
 var cubeVerticies = [
     vec4( -0.5, -0.5,  0.5, 1.0 ),
