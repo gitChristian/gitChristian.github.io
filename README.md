@@ -3,6 +3,8 @@ CS174a_TermProject
 
 Term Project for CS 174a
 
+Play at https://gitchristian.github.io/
+
 Team 9
 Team Members: Joey Gomez-Benito, Chris Nersesyan, Zhen Liu, Yifan Wang
 
